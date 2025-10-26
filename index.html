@@ -45,7 +45,7 @@
   .scene{
     position:relative; min-height:100vh;
     display:flex; align-items:center; justify-content:center; text-align:center;
-    padding:clamp(6rem, 8vw, 11rem) 1rem clamp(5rem, 7vw, 7rem);
+    padding:clamp(4rem, 6vw, 10rem) 1rem clamp(3.5rem, 5vw, 6rem);
     z-index:1;
   }
 
@@ -71,7 +71,7 @@
 
   .door-button{
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-    width:min(140px, 38vw); height:min(140px, 38vw); min-width:96px; min-height:96px;
+    width:min(140px, 38vw); height:min(140px, 38vw); min-width:92px; min-height:92px;
     border-radius:999px; cursor:pointer; z-index:85;
     background: radial-gradient(circle at 30% 30%, #fff8cc, #ffb703 55%, #b45309 100%);
     box-shadow:0 0 0 8px rgba(0,0,0,.25), 0 0 30px 6px rgba(255,197,61,.45),
@@ -81,14 +81,14 @@
   }
   .door-button:active{ transform:translate(-50%,-50%) scale(0.98); }
   .door-button span{ font-weight:800; letter-spacing:.5px; text-transform:uppercase; line-height:1.1; font-size:clamp(12px, 3.5vw, 14px); color:#442c00; text-shadow:0 1px 0 rgba(255,255,255,.5); width:80%; text-align:center; }
-  .door-label{ position:absolute; left:50%; top:calc(50% + min(95px, 26vw)); transform:translateX(-50%); font-size:clamp(12px, 3.2vw, 14px); opacity:.8; letter-spacing:.3px; padding:0 .5rem; text-align:center; }
+  .door-label{ position:absolute; left:50%; top:calc(50% + min(95px, 26vw)); transform:translateX(-50%); font-size:clamp(12px, 3.2vw, 14px); opacity:.9; letter-spacing:.3px; padding:0 .5rem; text-align:center; }
 
   .dark-overlay{ position:fixed; inset:0; background:radial-gradient(circle at 50% -20%, rgba(255,255,255,0.06), rgba(0,0,0,0.92) 55%); transition:opacity .7s ease; z-index:1; pointer-events:none; }
   body.lights-on .dark-overlay{ opacity:0; }
 
   /* Top decorations */
-  .bunting{ position:absolute; top:0; left:0; right:0; height:72px; opacity:0; transition:opacity 1s ease .2s; z-index:3; }
-  .string-lights{ position:absolute; top:4px; left:0; right:0; height:90px; pointer-events:none; opacity:0; transition:opacity .9s ease .2s; z-index:5; }
+  .bunting{ position:absolute; top:0; left:0; right:0; height:64px; opacity:0; transition:opacity 1s ease .2s; z-index:3; }
+  .string-lights{ position:absolute; top:4px; left:0; right:0; height:82px; pointer-events:none; opacity:0; transition:opacity .9s ease .2s; z-index:5; }
   body.lights-on .bunting, body.lights-on .string-lights{ opacity:1; }
 
   /* Effects layers */
@@ -253,13 +253,16 @@
 
   /* Responsive tweaks */
   @media (max-width: 768px){
-    .scene{ padding-top:7rem; padding-bottom:4.5rem; }
+    .scene{ padding-top:6.5rem; padding-bottom:4.5rem; }
     .table-surface{ height:36px; border-radius:12px; }
+    .door-button{ width:min(120px, 42vw); height:min(120px,42vw); }
+    .door-label{ top:calc(50% + 84px); }
   }
   @media (max-width: 420px){
     .bunting{ height:64px; }
     .string-lights{ height:82px; top:2px; }
     .message-card{ margin:10px auto 16px; padding:12px 14px; border-radius:16px; }
+    .clown{ width:88px; height:88px; }
   }
 
   /* Reduced motion for accessibility / smoother mobile */
@@ -276,16 +279,20 @@
   <div class="doors" id="doorsLayer" aria-label="Closed doors">
     <div class="door left"><span class="handle" style="top:55%;"></span></div>
     <div class="door right"><span class="handle" style="top:45%;"></span></div>
-    <button id="btnDoorKnob" class="door-button d-flex align-items-center justify-content-center" aria-label="Press to enter">
+
+    <!-- door-button kept centered and touch friendly; it's visually large on mobile -->
+    <button id="btnDoorKnob" class="door-button d-flex align-items-center justify-content-center btn btn-warning" aria-label="Press to enter">
       <span>Press to Enter</span>
     </button>
-    <div class="door-label">Back from office… press to open</div>
+
+    <!-- hide label on extra-small screens for space -->
+    <div class="door-label d-none d-sm-block">Back from office… press to open</div>
   </div>
 
   <div class="dark-overlay" aria-hidden="true"></div>
 
-  <!-- Bunting -->
-  <svg class="bunting" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+  <!-- Bunting (hidden on xs to reduce clutter) -->
+  <svg class="bunting d-none d-sm-block" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <linearGradient id="tri1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#ff99c2"/><stop offset="100%" stop-color="#ff4d8d"/></linearGradient>
       <linearGradient id="tri2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#9bd0ff"/><stop offset="100%" stop-color="#4dabf7"/></linearGradient>
@@ -311,8 +318,8 @@
     </g>
   </svg>
 
-  <!-- Lights string -->
-  <svg class="string-lights" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+  <!-- Lights string (hidden on xs) -->
+  <svg class="string-lights d-none d-sm-block" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
     <path d="M0,20 C300,100 900,-20 1200,60" stroke="#fff" stroke-width="2" fill="none" opacity=".35"/>
     <g>
       <circle class="bulb" cx="80" cy="38" r="6" fill="#ffe8a3"/>
@@ -351,8 +358,9 @@
         <!-- Step 1: Lights -->
         <div id="step-lights" class="mt-2">
           <p class="prompt mb-2">It’s dark inside. Turn on the lights to reveal the surprise.</p>
-          <div class="d-flex justify-content-center controls">
-            <button id="btnLightsOn" class="btn btn-success btn-lg px-4">Turn on Lights 💡</button>
+          <div class="d-grid gap-2 d-sm-flex justify-content-center controls">
+            <!-- full width on xs, auto on sm+ -->
+            <button id="btnLightsOn" class="btn btn-success btn-lg px-4 w-100 w-sm-auto">Turn on Lights 💡</button>
           </div>
           <small class="d-block mt-2 text-white-50">Music will start when the lights come on.</small>
         </div>
@@ -382,12 +390,16 @@
 
           <div id="step-candle" class="mt-2 hidden">
             <p class="prompt mb-2">Tap the candle or use the button to light it 🕯️</p>
-            <button id="btnLightCandle" class="btn btn-primary btn-sm">Light Candle 🔥</button>
+            <div class="d-grid d-sm-inline-flex gap-2 justify-content-center">
+              <button id="btnLightCandle" class="btn btn-primary btn-sm w-100 w-sm-auto">Light Candle 🔥</button>
+            </div>
           </div>
 
           <div id="step-blow" class="hidden mt-3">
             <p class="prompt">Make a wish… then blow out the candle!</p>
-            <button id="btnBlow" class="btn btn-outline-warning">💨 Blow Candle</button>
+            <div class="d-grid d-sm-inline-flex gap-2 justify-content-center">
+              <button id="btnBlow" class="btn btn-outline-warning w-100 w-sm-auto">💨 Blow Candle</button>
+            </div>
           </div>
         </div>
 
@@ -431,13 +443,13 @@
               <div class="tech-title">Surprise 🤩</div>
               <div class="tech-msg" id="giftMessage">
                 "Birthday status: 200 OK ✅ Unique delivery confirmed — auto-assigning you joy and assigning me a
-                <span class='treat-chip'>TREAT</span>. Please approve! 😜"
+                <span class='treat-chip'>TREAT</span>. Please approve! 😜" <br>--<strong>Khorshed Alom</strong>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="mt-3"><button id="btnReplay" class="btn btn-outline-light btn-sm hidden">↻ Replay</button></div>
+        <div class="mt-3"><button id="btnReplay" class="btn btn-outline-light btn-sm hidden w-100 w-sm-auto">↻ Replay</button></div>
       </div>
     </div>
   </main>
@@ -446,7 +458,8 @@
   <button id="helpBtn" class="btn btn-info help-btn">❓ What do I do next?</button>
 
   <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <!-- modal becomes fullscreen on small devices -->
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
       <div class="modal-content bg-dark text-white border-light">
         <div class="modal-header">
           <h5 class="modal-title" id="helpTitle">What do I do now?</h5>
@@ -466,7 +479,7 @@
 
   <!-- IQ Game Modal -->
   <div class="modal fade" id="iqModal" tabindex="-1" aria-labelledby="iqTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
       <div class="modal-content bg-dark text-white border-light">
         <div class="modal-header">
           <h5 class="modal-title" id="iqTitle">🤣 Funny IQ Challenge</h5>
