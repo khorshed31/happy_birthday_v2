@@ -10,7 +10,7 @@
 
 <style>
   :root{
-    --bg:#0b0f1a; --wall:#0f1424; --wall-top:#131a2b; --floor:#0a0e18;
+    --wall:#131a2b; --floor:#0a0e18;
     --accent:#ff4d8d; --gold:#f9c642; --neon:#ffd3e6; --light:#ffe8a3;
     --glass-bg: rgba(255,255,255,.06); --glass-brd: rgba(255,255,255,.18);
     --text-grad: linear-gradient(90deg, #ff66a3, #ffd43b, #5eead4, #60a5fa, #ff66a3);
@@ -20,11 +20,13 @@
   body{
     margin:0; color:#fff; overflow-x:hidden;
     font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    background: linear-gradient(180deg, var(--wall-top) 0 55%, var(--floor) 55% 100%);
+    background: linear-gradient(180deg, var(--wall) 0 55%, var(--floor) 55% 100%);
   }
+
+  /* soft vignette + baseboard */
   body:before{
     content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-    background: radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.06), rgba(0,0,0,.5) 60%, rgba(0,0,0,.8) 100%);
+    background: radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.06), rgba(0,0,0,.6) 60%, rgba(0,0,0,.85) 100%);
     mix-blend-mode:screen; opacity:.7;
   }
   body:after{
@@ -33,23 +35,34 @@
     filter:blur(.2px);
   }
 
-  /* Scene & layers */
+  /* Scene */
   .scene{ position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:11rem 1rem 6rem; z-index:6; }
 
+  /* Doors */
   .doors{ position:fixed; inset:0; z-index:80; pointer-events:auto; }
   body.open .doors{ pointer-events:none; }
-  .door{ position:absolute; top:0; width:50%; height:100%;
-    background: linear-gradient(135deg, rgba(0,0,0,.25), rgba(255,255,255,.05)), repeating-linear-gradient(180deg, #5b3a2a 0 10px, #4b2f24 10px 20px), radial-gradient(100% 100% at 50% 0%, #6e4734 0%, #2e1913 70%);
-    box-shadow:inset 0 0 80px rgba(0,0,0,.65), 0 20px 60px rgba(0,0,0,.35); transition:transform 1.1s ease-in-out;
+  .door{
+    position:absolute; top:0; width:50%; height:100%;
+    background:
+      linear-gradient(135deg, rgba(0,0,0,.25), rgba(255,255,255,.05)),
+      repeating-linear-gradient(180deg, #5b3a2a 0 10px, #4b2f24 10px 20px),
+      radial-gradient(100% 100% at 50% 0%, #6e4734 0%, #2e1913 70%);
+    box-shadow:inset 0 0 80px rgba(0,0,0,.65), 0 20px 60px rgba(0,0,0,.35);
+    transition:transform 1.1s ease-in-out;
   }
-  .door.left{ left:0; border-right:4px solid #3b2017; } .door.right{ right:0; border-left:4px solid #3b2017; }
-  body.open .door.left{ transform:translateX(-100%); } body.open .door.right{ transform:translateX(100%); }
+  .door.left{ left:0; border-right:4px solid #3b2017; }
+  .door.right{ right:0; border-left:4px solid #3b2017; }
+  body.open .door.left{ transform:translateX(-100%); }
+  body.open .door.right{ transform:translateX(100%); }
   .handle{ position:absolute; top:50%; width:18px; height:18px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #fff6cc, #cda85a 60%, #926c28 100%); box-shadow:0 0 0 3px rgba(0,0,0,.35); }
   .door.left .handle{ right:18px; } .door.right .handle{ left:18px; }
 
-  .door-button{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:140px; height:140px; border-radius:999px; cursor:pointer; z-index:85;
+  .door-button{
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:140px; height:140px; border-radius:999px; cursor:pointer; z-index:85;
     background: radial-gradient(circle at 30% 30%, #fff8cc, #ffb703 55%, #b45309 100%);
-    box-shadow:0 0 0 8px rgba(0,0,0,.25), 0 0 30px 6px rgba(255,197,61,.45), inset 0 8px 18px rgba(255,255,255,.45), inset 0 -8px 18px rgba(0,0,0,.35);
+    box-shadow:0 0 0 8px rgba(0,0,0,.25), 0 0 30px 6px rgba(255,197,61,.45),
+               inset 0 8px 18px rgba(255,255,255,.45), inset 0 -8px 18px rgba(0,0,0,.35);
     display:flex; align-items:center; justify-content:center; transition: transform .2s ease, box-shadow .2s ease;
   }
   .door-button:hover{ transform:translate(-50%,-50%) scale(1.05); }
@@ -57,14 +70,21 @@
   .door-button span{ font-weight:800; letter-spacing:.5px; text-transform:uppercase; line-height:1.1; font-size:14px; color:#442c00; text-shadow:0 1px 0 rgba(255,255,255,.5); width:80%; text-align:center; }
   .door-label{ position:absolute; left:50%; top:calc(50% + 95px); transform:translateX(-50%); font-size:14px; opacity:.8; letter-spacing:.3px; }
 
+  /* Overlay */
   .dark-overlay{ position:fixed; inset:0; background:radial-gradient(circle at 50% -20%, rgba(255,255,255,0.06), rgba(0,0,0,0.92) 55%); transition:opacity .7s ease; z-index:1; pointer-events:none; }
   body.lights-on .dark-overlay{ opacity:0; }
 
+  /* Decorations (hidden on phones per your request) */
   .bunting{ position:absolute; top:0; left:0; right:0; height:90px; opacity:0; transition:opacity 1s ease .2s; z-index:3; }
   .banner { position:absolute; top:70px; left:0; right:0; height:170px; opacity:0; transform:translateY(-8px); transition:opacity .9s ease .35s, transform .9s ease .35s; z-index:4; pointer-events:none; }
   .string-lights{ position:absolute; top:8px; left:0; right:0; height:120px; pointer-events:none; opacity:0; transition:opacity .9s ease .2s; z-index:5; }
   body.lights-on .bunting, body.lights-on .banner, body.lights-on .string-lights{ opacity:1; transform:none; }
-  .banner text{ font: 800 58px/1 "Poppins", Arial, sans-serif; letter-spacing:3px; fill:url(#bannerGradient); stroke:#fff; stroke-width:1.5px; paint-order:stroke fill; filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)) drop-shadow(0 0 14px rgba(255,77,141,.4)); }
+
+  .banner text{
+    font: 800 58px/1 "Poppins", Arial, sans-serif; letter-spacing:3px;
+    fill:url(#bannerGradient); stroke:#ffffff; stroke-width:1.5px; paint-order:stroke fill;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.4)) drop-shadow(0 0 14px rgba(255,77,141,.4));
+  }
 
   .balloons{ position:absolute; inset:0; pointer-events:none; overflow:hidden; opacity:0; transition:opacity 1s ease .3s; z-index:1; }
   body.lights-on .balloons{ opacity:1; }
@@ -81,9 +101,13 @@
   .confetti span{ position:absolute; width:10px; height:14px; opacity:0; }
   @keyframes fall{0%{opacity:1; transform:translateY(-100vh) rotate(0);}100%{opacity:1; transform:translateY(110vh) rotate(720deg);} }
 
-  .table-surface{ width:min(820px, 95vw); height:44px; margin: 0 auto; border-radius:14px;
-    background: linear-gradient(180deg,#8f5e3e,#6d422a 60%, #5a3521); box-shadow: 0 12px 28px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.25); z-index:0; }
-
+  /* Table & cake */
+  .table-surface{
+    width:min(820px, 95vw); height:44px; margin: 0 auto; border-radius:14px;
+    background: linear-gradient(180deg,#8f5e3e,#6d422a 60%, #5a3521);
+    box-shadow: 0 12px 28px rgba(0,0,0,.35), inset 0 2px 0 rgba(255,255,255,.25);
+    z-index:0;
+  }
   .cake-wrap{ opacity:0; transform:translateY(20px); transition:all .7s ease; z-index:6; }
   body.lights-on .cake-wrap{ opacity:1; transform:none; }
   .cake-svg{ display:block; margin:2rem auto 0; width:100%; max-width:560px; height:auto; }
@@ -92,9 +116,14 @@
   .flame.flicker{ animation:flicker .12s infinite alternate ease-in-out; }
   @keyframes flicker{ from{transform:scaleY(1);} to{transform:scaleY(1.12) translateX(1px);} }
 
+  /* Headline + big message */
   .neon{ font-weight:800; letter-spacing:.5px; text-shadow:0 0 6px var(--neon), 0 0 14px var(--neon), 0 0 28px #ff4d8d; }
   .message-card{ margin:12px auto 0; padding:18px 22px; max-width:820px; background:var(--glass-bg); border:1px solid var(--glass-brd); border-radius:20px; backdrop-filter:blur(6px); box-shadow:0 10px 32px rgba(0,0,0,.25), inset 0 0 40px rgba(255,255,255,.05); z-index:6; position:relative; }
-  #typeLine{ font-weight:800; font-size:clamp(1.6rem, 2.2vw + 1rem, 2.6rem); line-height:1.25; background:var(--text-grad); background-size:300% 300%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:hueflow 9s ease-in-out infinite alternate; text-shadow:0 2px 0 rgba(0,0,0,.35); }
+  #typeLine{
+    font-weight:800; font-size:clamp(1.6rem, 2.2vw + 1rem, 2.6rem); line-height:1.25;
+    background:var(--text-grad); background-size:300% 300%; -webkit-background-clip:text; background-clip:text; color:transparent;
+    animation:hueflow 9s ease-in-out infinite alternate; text-shadow:0 2px 0 rgba(0,0,0,.35);
+  }
   @keyframes hueflow{ 0%{background-position:0% 50%;} 100%{background-position:100% 50%;} }
 
   .prompt{ margin-top:1rem; font-weight:600; }
@@ -102,35 +131,39 @@
   .hidden{ display:none !important; }
   .muted{ opacity:.75; }
 
-  /* === Sticky guide bar === */
-  .guide{
-    position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
-    z-index:90; max-width:92vw; padding:10px 14px; border-radius:999px;
-    background:rgba(18,24,40,.78); border:1px solid rgba(255,255,255,.15);
-    box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 0 24px rgba(255,255,255,.05);
-    display:flex; align-items:center; gap:10px; backdrop-filter: blur(8px);
+  /* Desktop & tablet tidy */
+  @media (max-width: 992px){
+    .scene{ padding-top:9rem; }
+    .banner{ top:56px; height:130px; }
   }
-  .guide .dot{ width:10px; height:10px; border-radius:50%; background:#60a5fa; box-shadow:0 0 10px #60a5fa; }
-  .guide strong{ letter-spacing:.3px; }
-  #guideText{ font-weight:600; }
-  #liveGuide{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
-
-  /* Responsive tidy */
-  @media (max-width: 992px){ .scene{ padding-top:9rem; } .banner{ top:56px; height:130px; } }
   @media (max-width: 768px){
     .scene{ padding-top:8rem; padding-bottom:3.5rem; }
-    .bunting{ height:72px; } .string-lights{ height:90px; top:4px; }
-    .banner{ top:62px; height:150px; } .banner text{ font:800 40px/1 "Poppins", Arial, sans-serif; letter-spacing:2px; }
+    .bunting{ height:72px; }
+    .string-lights{ height:90px; top:4px; }
+    .banner{ top:62px; height:150px; }
+    .banner text{ font: 800 40px/1 "Poppins", Arial, sans-serif; letter-spacing:2px; }
     .table-surface{ height:38px; border-radius:12px; }
     .door-button{ width:108px; height:108px; }
-    .balloon-wrap{ width:64px; height:100px; } .balloon-svg{ width:64px; height:86px; }
+    .balloon-wrap{ width:64px; height:100px; }
+    .balloon-svg{ width:64px; height:86px; }
   }
+
+  /* PHONE: hide banner & all FX (you asked to keep core same on both) */
   @media (max-width: 576px){
-    .scene{ padding:6.5rem .75rem 3.75rem; } /* extra bottom for guide */
-    .door-button{ width:88px; height:88px; } .door-label{ top:calc(50% + 72px); font-size:13px; }
-    .banner, .bunting, .string-lights{ display:none; }
+    .scene{ padding:6.5rem .75rem 3.5rem; } /* bottom room for help btn */
+    .door-button{ width:88px; height:88px; }
+    .door-label{ top:calc(50% + 72px); font-size:13px; }
+    .banner, .bunting, .string-lights{ display:none !important; }
     .balloons, .confetti, .sparkles{ display:none !important; }
-    .message-card{ padding:14px 16px; } .prompt{ margin-top:.6rem; }
+    .message-card{ padding:14px 16px; }
+    .prompt{ margin-top:.6rem; }
+  }
+
+  /* Floating NEXT HELP button */
+  .help-btn{
+    position:fixed; right:16px; bottom:16px; z-index:90;
+    border-radius:999px; padding:12px 16px; font-weight:700;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
   }
 </style>
 </head>
@@ -151,7 +184,7 @@
   <!-- Vignette -->
   <div class="dark-overlay" aria-hidden="true"></div>
 
-  <!-- Bunting -->
+  <!-- Bunting (desktop/tablet only) -->
   <svg class="bunting d-none d-sm-block" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <linearGradient id="tri1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#ff99c2"/><stop offset="100%" stop-color="#ff4d8d"/></linearGradient>
@@ -178,7 +211,7 @@
     </g>
   </svg>
 
-  <!-- Banner -->
+  <!-- Banner (desktop/tablet only) -->
   <svg class="banner d-none d-sm-block" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <path id="curve" d="M60,140 C360,70 840,70 1140,140" />
@@ -192,7 +225,7 @@
     <text><textPath href="#curve" startOffset="50%" text-anchor="middle">HAPPY BIRTHDAY!</textPath></text>
   </svg>
 
-  <!-- Ceiling string lights -->
+  <!-- Ceiling string lights (desktop/tablet only) -->
   <svg class="string-lights d-none d-sm-block" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
     <path d="M0,20 C300,100 900,-20 1200,60" stroke="#fff" stroke-width="2" fill="none" opacity=".35"/>
     <g>
@@ -213,7 +246,7 @@
     </g>
   </svg>
 
-  <!-- FX -->
+  <!-- FX (desktop/tablet only) -->
   <div class="balloons d-none d-sm-block" id="balloons" aria-hidden="true"></div>
   <div class="confetti d-none d-sm-block" id="confetti" aria-hidden="true"></div>
   <div class="sparkles d-none d-sm-block" id="sparkles" aria-hidden="true"></div>
@@ -259,7 +292,6 @@
 
           <div id="step-candle" class="mt-2">
             <p class="prompt">Tap the candle to light it 🕯️</p>
-            <button id="btnLightCandle" class="btn btn-primary btn-sm">Light Candle 🔥</button>
           </div>
 
           <div id="step-blow" class="hidden">
@@ -281,7 +313,7 @@
           </div>
           <div class="surprise text-center" id="surprise">
             <div class="mb-2">Your bonus gift: uncontrollable giggles 😆</div>
-            <div class="boogie" aria-hidden="true">🕺</div>
+            <div class="boogie" aria-hidden="true">🕺🍌</div>
             <p class="mt-3" id="joke"></p>
           </div>
         </div>
@@ -291,12 +323,27 @@
     </div>
   </main>
 
-  <!-- Sticky step-by-step guide -->
-  <div class="guide" role="status" aria-live="polite">
-    <span class="dot" aria-hidden="true"></span>
-    <strong id="guideStep">Step 1/5:</strong>
-    <span id="guideText">Press the big round button to open the door.</span>
-    <span id="liveGuide"></span>
+  <!-- HELP / NEXT button -->
+  <button id="helpBtn" class="btn btn-info help-btn">❓ What do I do next?</button>
+
+  <!-- Help Modal -->
+  <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-light">
+        <div class="modal-header">
+          <h5 class="modal-title" id="helpTitle">What do I do now?</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="helpCurrent" class="mb-2"></div>
+          <div id="helpNext" class="fw-bold"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="helpGoBtn" type="button" class="btn btn-primary">Take me there</button>
+          <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Got it</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -313,7 +360,6 @@
 
   const cakeWrap = document.getElementById('cakeWrap');
   const stepCandle = document.getElementById('step-candle');
-  const btnLightCandle = document.getElementById('btnLightCandle');
   const stepBlow = document.getElementById('step-blow');
   const flame = document.getElementById('flame');
   const btnBlow = document.getElementById('btnBlow');
@@ -331,21 +377,7 @@
   const jokeP = document.getElementById('joke');
   const btnReplay = document.getElementById('btnReplay');
 
-  /* Guide bar */
-  const guideBar = document.querySelector('.guide');
-  const guideStep = document.getElementById('guideStep');
-  const guideText = document.getElementById('guideText');
-  const liveGuide = document.getElementById('liveGuide');
-  function setGuide(step, text){
-    guideStep.textContent = `Step ${step}/5:`;
-    guideText.textContent = text;
-    liveGuide.textContent = ` ${guideStep.textContent} ${guideText.textContent}`; // SR update
-  }
-
-  function show(el){ el.classList.remove('hidden'); }
-  function hide(el){ el.classList.add('hidden'); }
-
-  /* Typewriter */
+  /* Slower typewriter for readability */
   const TYPE_SPEED = 40, LINE_PAUSE = 1400;
   function typeText(lines, cb){
     let i=0, j=0, current=''; typeLine.textContent='';
@@ -360,7 +392,7 @@
     nextLine();
   }
 
-  /* Balloons */
+  /* FX helpers (run only on non-phone via display check) */
   function makeBalloonsSVG(){
     if(!balloonsLayer) return;
     const palettes = [
@@ -369,7 +401,7 @@
       {light:'#d7ffd9', mid:'#6fe07d', dark:'#2f9e44'},
       {light:'#fff5cc', mid:'#ffd34d', dark:'#c99700'}
     ];
-    const count = 20;
+    const count = 18;
     balloonsLayer.innerHTML=''; balloonsLayer.style.zIndex = 1;
     for(let i=0; i<count; i++){
       const p = palettes[i%palettes.length];
@@ -396,7 +428,6 @@
       balloonsLayer.appendChild(wrap);
     }
   }
-
   function burstConfetti(n=160){
     if(!confettiLayer) return;
     confettiLayer.innerHTML='';
@@ -413,7 +444,6 @@
     }
     setTimeout(()=> confettiLayer.innerHTML='', 9000);
   }
-
   function startSparkles(){
     if(!sparklesLayer) return;
     sparklesLayer.innerHTML='';
@@ -426,54 +456,47 @@
     }
   }
 
+  /* Music */
   function playMusicAuto(){
     music.loop = true; music.volume = 0.7;
     const p = music.play(); if(p && p.catch){ p.catch(()=>{}); }
   }
 
   /* FLOW */
-  setGuide(1, 'Press the big round button to open the door.');
-
-  // Open door
   btnDoorKnob.addEventListener('click', ()=>{
     body.classList.add('open');
     btnDoorKnob.style.display = 'none';
     doorLabel.style.display = 'none';
     setTimeout(()=>{ doorsLayer.style.display = 'none'; }, 1150);
-    setGuide(2, 'Turn on the lights to reveal the surprise. Tap the green button.');
     window.scrollTo({top:0, behavior:'smooth'});
   });
 
-  // Turn on lights
   btnLightsOn.addEventListener('click', ()=>{
     body.classList.add('lights-on');
-    hide(stepLights);
-    show(cakeWrap);
-    setGuide(3, 'Tap the candle to light it. Or press “Light Candle”.');
+    stepLights.classList.add('hidden');
+    cakeWrap.classList.remove('hidden');
     playMusicAuto();
+
     if(getComputedStyle(balloonsLayer || document.body).display !== 'none') makeBalloonsSVG();
     if(getComputedStyle(sparklesLayer || document.body).display !== 'none') startSparkles();
     if(getComputedStyle(confettiLayer || document.body).display !== 'none') burstConfetti(200);
+
     cakeWrap.scrollIntoView({behavior:'smooth', block:'center'});
   });
 
-  // Candle
   function lightCandle(){
     flame.style.opacity = 1; flame.classList.add('flicker');
-    hide(stepCandle); show(stepBlow);
-    setGuide(4, 'Make a wish… then blow out the candle. Tap “Blow Candle”.');
+    stepCandle.classList.add('hidden'); stepBlow.classList.remove('hidden');
   }
   document.getElementById('candle').addEventListener('click', lightCandle);
   document.getElementById('candle').addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); lightCandle(); }});
-  btnLightCandle.addEventListener('click', lightCandle);
 
-  // Blow
   function blowOut(){
     flame.style.opacity = 0; flame.classList.remove('flicker');
-    hide(stepBlow);
+    stepBlow.classList.add('hidden');
     const lines = [
       '🎉 Happy Birthday!',
-       "Send from Khorshed Alom",      
+      "Send from Khorshed Alom",      
         "Count your life by smiles, not tears",      
         "Count your age by friends, not years",      
         "Beloved Respected APU", 
@@ -483,17 +506,15 @@
         "Happy Downloading... Day",
         "Lots Of love",
     ];
-    show(messages);
-    setGuide(5, 'Enjoy the messages, then tap the gift box to open it.');
+    messages.classList.remove('hidden');
     typeText(lines, ()=>{
-      show(giftStage);
+      giftStage.classList.remove('hidden');
       const giftEl = document.querySelector('.gift'); if(giftEl){ giftEl.style.opacity = 1; giftEl.style.transform='none'; }
-      burstConfetti(160);
+      if(getComputedStyle(confettiLayer || document.body).display !== 'none') burstConfetti(160);
     });
   }
   btnBlow.addEventListener('click', blowOut);
 
-  // Gift
   const jokes = [
     'I bought you a candle. It was a little wick-spensive. 🕯️',
     'Aging is like software updates: mostly security patches. 😅',
@@ -504,12 +525,10 @@
   if(gift) gift.addEventListener('click', ()=>{
     gift.classList.add('open'); surprise.style.display='block';
     jokeP.textContent = jokes[Math.floor(Math.random()*jokes.length)];
-    burstConfetti(200); 
-    guideBar.classList.add('hidden'); // guide no longer needed
-    document.getElementById('btnReplay').classList.remove('hidden');
+    if(getComputedStyle(confettiLayer || document.body).display !== 'none') burstConfetti(200);
+    btnReplay.classList.remove('hidden');
   });
 
-  // Replay
   btnReplay.addEventListener('click', ()=>{
     music.pause(); music.currentTime=0;
     body.className='';
@@ -522,14 +541,90 @@
     flame.style.opacity=0; flame.classList.remove('flicker');
     surprise.style.display='none'; gift.classList.remove('open');
     const giftDom = document.querySelector('.gift'); if(giftDom){ giftDom.style.opacity=0; giftDom.style.transform='translateY(10px)'; }
-    guideBar.classList.remove('hidden');
-    setGuide(1, 'Press the big round button to open the door.');
     window.scrollTo({top:0, behavior:'smooth'});
   });
 
-  // Keyboard blow
+  // ====== HELP / NEXT BUTTON LOGIC ======
+  const helpBtn = document.getElementById('helpBtn');
+  const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+  const helpCurrent = document.getElementById('helpCurrent');
+  const helpNext = document.getElementById('helpNext');
+  const helpGoBtn = document.getElementById('helpGoBtn');
+
+  function getStepStatus(){
+    const isDoorOpen   = body.classList.contains('open') && doorsLayer.style.display === 'none';
+    const hasLights    = body.classList.contains('lights-on');
+    const candleLit    = flame.classList.contains('flicker') && flame.style.opacity !== '0';
+    const canBlow      = !stepBlow.classList.contains('hidden');
+    const giftShown    = !giftStage.classList.contains('hidden');
+    const giftOpened   = gift.classList.contains('open');
+
+    if(!isDoorOpen){
+      return {
+        step: 1,
+        current: 'You are at the door.',
+        next: 'Press the big round button to open the door.',
+        target: btnDoorKnob
+      };
+    }
+    if(isDoorOpen && !hasLights){
+      return {
+        step: 2,
+        current: 'You entered the room.',
+        next: 'Tap “Turn on Lights” to reveal the surprise.',
+        target: btnLightsOn
+      };
+    }
+    if(hasLights && !candleLit){
+      return {
+        step: 3,
+        current: 'The room is lit up ✨',
+        next: 'Tap the candle on the cake to light it.',
+        target: document.getElementById('candle')
+      };
+    }
+    if(candleLit && canBlow){
+      return {
+        step: 4,
+        current: 'Candle is lit 🔥',
+        next: 'Make a wish and press “Blow Candle”.',
+        target: btnBlow
+      };
+    }
+    if(giftShown && !giftOpened){
+      return {
+        step: 5,
+        current: 'Birthday message shown 🎉',
+        next: 'Tap the gift box to open it.',
+        target: gift
+      };
+    }
+    return {
+      step: 6,
+      current: 'All done! Enjoy your surprise 😄',
+      next: 'You can press Replay to start again.',
+      target: btnReplay
+    };
+  }
+
+  helpBtn.addEventListener('click', ()=>{
+    const s = getStepStatus();
+    helpCurrent.textContent = `Current step: ${s.current}`;
+    helpNext.textContent = `Next: ${s.next}`;
+    helpModal.show();
+    helpGoBtn.onclick = ()=>{
+      helpModal.hide();
+      if(s.target && typeof s.target.scrollIntoView === 'function'){
+        s.target.scrollIntoView({behavior:'smooth', block:'center'});
+        // focus if it's a button
+        if(s.target.focus) setTimeout(()=>s.target.focus(), 450);
+      }
+    };
+  });
+
+  // Keyboard blow (accessibility)
   document.addEventListener('keydown', (e)=>{
-    if(!stepBlow.classList.contains('hidden') && (e.key===' ' || e.key==='Enter')){ e.preventDefault(); blowOut(); }
+    if(stepBlow && !stepBlow.classList.contains('hidden') && (e.key===' ' || e.key==='Enter')){ e.preventDefault(); blowOut(); }
   });
 </script>
 </body>
