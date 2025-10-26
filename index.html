@@ -15,6 +15,8 @@
     --glass-bg: rgba(255,255,255,.06); --glass-brd: rgba(255,255,255,.18);
     --text-grad: linear-gradient(90deg, #ff66a3, #ffd43b, #5eead4, #60a5fa, #ff66a3);
   }
+  /* essential hide */
+  .hidden{ display:none !important; }
 
   html, body { height:100%; }
   body{
@@ -22,8 +24,6 @@
     font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial;
     background: linear-gradient(180deg, var(--wall) 0 55%, var(--floor) 55% 100%);
   }
-
-  /* soft vignette + baseboard */
   body:before{
     content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
     background: radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.06), rgba(0,0,0,.6) 60%, rgba(0,0,0,.85) 100%);
@@ -32,11 +32,14 @@
   body:after{
     content:""; position:fixed; left:0; right:0; top:55%; height:4px; z-index:0;
     background:linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.04), rgba(255,255,255,.18));
-    filter:blur(.2px);
   }
 
-  /* Scene */
-  .scene{ position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:11rem 1rem 6rem; z-index:6; }
+  .scene{
+    position:relative; min-height:100vh;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:11rem 1rem 7rem;
+    z-index:1;
+  }
 
   /* Doors */
   .doors{ position:fixed; inset:0; z-index:80; pointer-events:auto; }
@@ -70,11 +73,10 @@
   .door-button span{ font-weight:800; letter-spacing:.5px; text-transform:uppercase; line-height:1.1; font-size:14px; color:#442c00; text-shadow:0 1px 0 rgba(255,255,255,.5); width:80%; text-align:center; }
   .door-label{ position:absolute; left:50%; top:calc(50% + 95px); transform:translateX(-50%); font-size:14px; opacity:.8; letter-spacing:.3px; }
 
-  /* Overlay */
   .dark-overlay{ position:fixed; inset:0; background:radial-gradient(circle at 50% -20%, rgba(255,255,255,0.06), rgba(0,0,0,0.92) 55%); transition:opacity .7s ease; z-index:1; pointer-events:none; }
   body.lights-on .dark-overlay{ opacity:0; }
 
-  /* Decorations (hidden on phones per your request) */
+  /* Decorations */
   .bunting{ position:absolute; top:0; left:0; right:0; height:90px; opacity:0; transition:opacity 1s ease .2s; z-index:3; }
   .banner { position:absolute; top:70px; left:0; right:0; height:170px; opacity:0; transform:translateY(-8px); transition:opacity .9s ease .35s, transform .9s ease .35s; z-index:4; pointer-events:none; }
   .string-lights{ position:absolute; top:8px; left:0; right:0; height:120px; pointer-events:none; opacity:0; transition:opacity .9s ease .2s; z-index:5; }
@@ -101,7 +103,7 @@
   .confetti span{ position:absolute; width:10px; height:14px; opacity:0; }
   @keyframes fall{0%{opacity:1; transform:translateY(-100vh) rotate(0);}100%{opacity:1; transform:translateY(110vh) rotate(720deg);} }
 
-  /* Table & cake */
+  /* Cake */
   .table-surface{
     width:min(820px, 95vw); height:44px; margin: 0 auto; border-radius:14px;
     background: linear-gradient(180deg,#8f5e3e,#6d422a 60%, #5a3521);
@@ -116,28 +118,190 @@
   .flame.flicker{ animation:flicker .12s infinite alternate ease-in-out; }
   @keyframes flicker{ from{transform:scaleY(1);} to{transform:scaleY(1.12) translateX(1px);} }
 
-  /* Headline + big message */
+  /* Messages */
   .neon{ font-weight:800; letter-spacing:.5px; text-shadow:0 0 6px var(--neon), 0 0 14px var(--neon), 0 0 28px #ff4d8d; }
-  .message-card{ margin:12px auto 0; padding:18px 22px; max-width:820px; background:var(--glass-bg); border:1px solid var(--glass-brd); border-radius:20px; backdrop-filter:blur(6px); box-shadow:0 10px 32px rgba(0,0,0,.25), inset 0 0 40px rgba(255,255,255,.05); z-index:6; position:relative; }
+  .message-card{
+    margin:12px auto 18px; padding:18px 22px; max-width:820px;
+    background:var(--glass-bg); border:1px solid var(--glass-brd); border-radius:20px;
+    backdrop-filter:blur(6px);
+    box-shadow:0 10px 32px rgba(0,0,0,.18), inset 0 0 40px rgba(255,255,255,.05);
+    position:relative; z-index:5;
+  }
   #typeLine{
-    font-weight:800; font-size:clamp(1.6rem, 2.2vw + 1rem, 2.6rem); line-height:1.25;
+    font-weight:800; font-size:clamp(1.4rem, 2.2vw + 1rem, 2.4rem); line-height:1.25;
     background:var(--text-grad); background-size:300% 300%; -webkit-background-clip:text; background-clip:text; color:transparent;
     animation:hueflow 9s ease-in-out infinite alternate; text-shadow:0 2px 0 rgba(0,0,0,.35);
+    word-break:break-word;
   }
   @keyframes hueflow{ 0%{background-position:0% 50%;} 100%{background-position:100% 50%;} }
 
-  .prompt{ margin-top:1rem; font-weight:600; }
-  .controls{ gap:.5rem; }
-  .hidden{ display:none !important; }
-  .muted{ opacity:.75; }
+  /* Gift */
+  .gift-stage{ margin-top:18px; position:relative; z-index:6; }
+  .gift{
+    width:230px; height:190px; margin:0 auto; position:relative; cursor:pointer;
+    filter: drop-shadow(0 14px 26px rgba(0,0,0,.35));
+    transition: transform .2s ease;
+  }
+  .gift:hover{ transform: translateY(-2px); }
+  .gift .box{
+    position:absolute; bottom:0; width:100%; height:140px; border-radius:16px;
+    background: linear-gradient(180deg,#7c3aed 0%, #5b21b6 100%);
+    border:1px solid rgba(255,255,255,.15);
+    overflow:hidden;
+  }
+  .gift .lid{
+    position:absolute; bottom:128px; left:50%; transform:translateX(-50%); width:260px; height:58px; border-radius:16px;
+    background: linear-gradient(180deg,#4c1d95 0%, #3b0764 100%);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 10px 20px rgba(0,0,0,.35);
+    transform-origin:50% 100%;
+    transition: transform .55s ease;
+  }
+  .gift.open .lid{ transform: translate(-50%,-140px) rotate(-12deg); }
 
-  /* Desktop & tablet tidy */
+  .ribbon-v{
+    position:absolute; left:50%; transform:translateX(-50%); width:34px; height:100%; top:0;
+    background: linear-gradient(180deg,#ffd43b,#f59e0b); border-radius:12px;
+    box-shadow: inset 0 0 8px rgba(255,255,255,.45);
+  }
+  .ribbon-h{
+    position:absolute; top:36px; left:10px; right:10px; height:28px; border-radius:12px;
+    background: linear-gradient(180deg,#ffd43b,#f59e0b); box-shadow: inset 0 0 8px rgba(255,255,255,.45);
+  }
+
+  .surprise{ margin-top:10px; position:relative; }
+  .emoji-burst{ pointer-events:none; position:absolute; left:50%; bottom:130px; transform:translateX(-50%); }
+  .emoji-burst span{
+    position:absolute; font-size:22px; opacity:0; animation: pop 1.2s ease forwards;
+  }
+  @keyframes pop{
+    0%{ transform: translate(0,0) scale(.6); opacity:0; }
+    10%{ opacity:1; }
+    100%{ transform: translate(var(--dx), var(--dy)) scale(1.2); opacity:0; }
+  }
+
+  /* Joker card revealed on unlock */
+  /* --- Gift message card: brighter, techy neon-glass --- */
+.joker-card{
+  position:absolute;
+  left:50%;
+  bottom:110px;
+  transform:translateX(-50%) translateY(20px) scale(.96);
+  opacity:0;
+  width:min(92vw, 360px);
+  padding:22px 18px;
+  border-radius:22px;
+  text-align:center;
+  background: radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,.18), rgba(255,255,255,.06) 60%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* animated neon border */
+  border:2px solid transparent;
+  border-image: linear-gradient(90deg, #ff66a3, #ffd43b, #5eead4, #60a5fa, #ff66a3) 1;
+  animation: neonFlow 8s linear infinite;
+
+  /* glow depth */
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.5),
+    0 0 22px rgba(255,77,141,.35),
+    inset 0 0 30px rgba(255,255,255,.10);
+  transition: all .6s cubic-bezier(.2,.8,.2,1);
+}
+.gift.open + .surprise .joker-card{
+  transform:translateX(-50%) translateY(-8px) scale(1);
+  opacity:1;
+}
+@keyframes neonFlow{
+  0%  { border-image-source: linear-gradient(90deg, #ff66a3, #ffd43b, #5eead4); }
+  50% { border-image-source: linear-gradient(90deg, #5eead4, #60a5fa, #ff66a3); }
+  100%{ border-image-source: linear-gradient(90deg, #ffd43b, #5eead4, #60a5fa); }
+}
+
+/* Title = techy display font with a subtle glow */
+.joker-card .tech-title{
+  font-family: 'Orbitron', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: .5px;
+  font-size: 1.15rem;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #ffe8a3, #ffd43b, #ff66a3);
+  -webkit-background-clip: text; background-clip:text; color: transparent;
+  text-shadow: 0 0 12px rgba(255,232,163,.6);
+}
+
+/* Message body = mono, readable, slightly larger */
+.joker-card .tech-msg{
+  font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .98rem;
+  line-height: 1.35;
+  color: #e6f1ff;
+  text-shadow: 0 0 8px rgba(255,255,255,.15);
+}
+
+/* Highlight chip for the word TREAT */
+.treat-chip{
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 0 2px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing:.4px;
+  background: linear-gradient(90deg, #22d3ee, #60a5fa);
+  color:#0b1220;
+  box-shadow: 0 0 14px rgba(96,165,250,.55), 0 4px 10px rgba(0,0,0,.35);
+  transform: translateY(-1px);
+  animation: chipPulse 1.6s ease-in-out infinite;
+}
+@keyframes chipPulse{
+  0%,100%{ filter: drop-shadow(0 0 6px rgba(96,165,250,.6)); }
+  50%    { filter: drop-shadow(0 0 12px rgba(34,211,238,.9)); }
+}
+
+/* Optional: mini “terminal cursor” after the message */
+.tech-msg::after{
+  content:"";
+  display:inline-block;
+  width:10px; height:1.05em;
+  margin-left:4px;
+  vertical-align:-2px;
+  background: #e6f1ff;
+  opacity:.85;
+  animation: caretBlink 1s steps(1) infinite;
+}
+@keyframes caretBlink{ 50%{ opacity:0; } }
+
+/* Small screens: keep it legible */
+@media (max-width: 420px){
+  .joker-card{ padding:18px 14px; border-radius:18px; }
+  .joker-card .tech-msg{ font-size:.94rem; }
+}
+
+  .clown{ width:120px; height:120px; margin:0 auto 8px; }
+
+  /* Inline Happy Birthday banner */
+  .inline-banner{
+    display:flex; align-items:center; justify-content:center;
+    margin: 10px auto 16px;
+  }
+  .inline-banner .hb-text{
+    font-weight: 800;
+    font-size: clamp(1.6rem, 3.2vw + 1rem, 3rem);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    background: var(--text-grad);
+    background-size: 300% 300%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 2px 0 rgba(0,0,0,.35);
+    animation: hueflow 9s ease-in-out infinite alternate;
+  }
+
   @media (max-width: 992px){
     .scene{ padding-top:9rem; }
     .banner{ top:56px; height:130px; }
   }
   @media (max-width: 768px){
-    .scene{ padding-top:8rem; padding-bottom:3.5rem; }
+    .scene{ padding-top:8rem; padding-bottom:4.5rem; }
     .bunting{ height:72px; }
     .string-lights{ height:90px; top:4px; }
     .banner{ top:62px; height:150px; }
@@ -146,20 +310,12 @@
     .door-button{ width:108px; height:108px; }
     .balloon-wrap{ width:64px; height:100px; }
     .balloon-svg{ width:64px; height:86px; }
+    .gift{ width:200px; height:170px; }
+    .gift .lid{ width:230px; height:54px; bottom:114px; }
+    .gift .box{ height:128px; }
+    .message-card{ margin-bottom:22px; }
   }
 
-  /* PHONE: hide banner & all FX (you asked to keep core same on both) */
-  @media (max-width: 576px){
-    .scene{ padding:6.5rem .75rem 3.5rem; } /* bottom room for help btn */
-    .door-button{ width:88px; height:88px; }
-    .door-label{ top:calc(50% + 72px); font-size:13px; }
-    .banner, .bunting, .string-lights{ display:none !important; }
-    .balloons, .confetti, .sparkles{ display:none !important; }
-    .message-card{ padding:14px 16px; }
-    .prompt{ margin-top:.6rem; }
-  }
-
-  /* Floating NEXT HELP button */
   .help-btn{
     position:fixed; right:16px; bottom:16px; z-index:90;
     border-radius:999px; padding:12px 16px; font-weight:700;
@@ -181,11 +337,10 @@
     <div class="door-label">Back from office… press to open</div>
   </div>
 
-  <!-- Vignette -->
   <div class="dark-overlay" aria-hidden="true"></div>
 
-  <!-- Bunting (desktop/tablet only) -->
-  <svg class="bunting d-none d-sm-block" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+  <!-- Bunting -->
+  <svg class="bunting" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <linearGradient id="tri1" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#ff99c2"/><stop offset="100%" stop-color="#ff4d8d"/></linearGradient>
       <linearGradient id="tri2" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#9bd0ff"/><stop offset="100%" stop-color="#4dabf7"/></linearGradient>
@@ -211,8 +366,8 @@
     </g>
   </svg>
 
-  <!-- Banner (desktop/tablet only) -->
-  <svg class="banner d-none d-sm-block" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
+  <!-- Banner -->
+  <!-- <svg class="banner" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
     <defs>
       <path id="curve" d="M60,140 C360,70 840,70 1140,140" />
       <linearGradient id="bannerGradient" x1="0" y1="0" x2="1" y2="0">
@@ -223,10 +378,10 @@
       </linearGradient>
     </defs>
     <text><textPath href="#curve" startOffset="50%" text-anchor="middle">HAPPY BIRTHDAY!</textPath></text>
-  </svg>
+  </svg> -->
 
-  <!-- Ceiling string lights (desktop/tablet only) -->
-  <svg class="string-lights d-none d-sm-block" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+  <!-- Lights -->
+  <svg class="string-lights" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
     <path d="M0,20 C300,100 900,-20 1200,60" stroke="#fff" stroke-width="2" fill="none" opacity=".35"/>
     <g>
       <circle class="bulb" cx="80" cy="38" r="6" fill="#ffe8a3"/>
@@ -246,28 +401,32 @@
     </g>
   </svg>
 
-  <!-- FX (desktop/tablet only) -->
-  <div class="balloons d-none d-sm-block" id="balloons" aria-hidden="true"></div>
-  <div class="confetti d-none d-sm-block" id="confetti" aria-hidden="true"></div>
-  <div class="sparkles d-none d-sm-block" id="sparkles" aria-hidden="true"></div>
+  <!-- FX layers -->
+  <div class="balloons" id="balloons" aria-hidden="true"></div>
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+  <div class="sparkles" id="sparkles" aria-hidden="true"></div>
 
   <!-- Main -->
   <main class="scene container-fluid">
     <div class="row justify-content-center w-100">
       <div class="col-12 col-sm-10 col-md-8 col-lg-7 mx-auto">
         <h1 class="display-6 neon">🤫 A Surprise Awaits!</h1>
-        <p class="lead muted">Your friend prepared something special at home…</p>
 
-        <!-- Lights -->
-        <div id="step-lights" class="mt-4">
+        <!-- Inline Happy Birthday banner (replaces the old lead paragraph) -->
+        <div class="inline-banner">
+          <div class="hb-text">🎉 Happy Birthday! 🎂</div>
+        </div>
+
+        <!-- Step 1: Lights -->
+        <div id="step-lights" class="mt-3">
           <p class="prompt">It’s dark inside. Turn on the lights to reveal the surprise.</p>
           <div class="d-flex justify-content-center controls">
             <button id="btnLightsOn" class="btn btn-success btn-lg px-4">Turn on Lights 💡</button>
           </div>
-          <small class="d-block mt-2 text-muted">Music will start when the lights come on.</small>
+          <small class="d-block mt-2 text-white">Music will start when the lights come on.</small>
         </div>
 
-        <!-- Cake + Candle -->
+        <!-- Step 2–3: Cake + Candle -->
         <div class="cake-wrap hidden" id="cakeWrap" role="region" aria-label="Cake area">
           <svg class="cake-svg" viewBox="0 0 700 520" role="img" aria-label="Birthday cake with a candle">
             <defs>
@@ -290,31 +449,60 @@
           </svg>
           <div class="table-surface" aria-hidden="true"></div>
 
-          <div id="step-candle" class="mt-2">
-            <p class="prompt">Tap the candle to light it 🕯️</p>
+          <div id="step-candle" class="mt-2 hidden">
+            <p class="prompt mb-2">Tap the candle or use the button to light it 🕯️</p>
+            <button id="btnLightCandle" class="btn btn-primary btn-sm">Light Candle 🔥</button>
           </div>
 
-          <div id="step-blow" class="hidden">
+          <div id="step-blow" class="hidden mt-3">
             <p class="prompt">Make a wish… then blow out the candle!</p>
             <button id="btnBlow" class="btn btn-outline-warning">💨 Blow Candle</button>
           </div>
         </div>
 
-        <!-- Messages -->
+        <!-- Step 4: Typed messages -->
         <div id="messages" class="mt-4 hidden">
           <div class="message-card"><p id="typeLine" class="mb-0"></p></div>
         </div>
 
-        <!-- Gift -->
-        <div id="giftStage" class="hidden">
-          <div class="gift d-flex justify-content-center my-3" id="gift" role="button" aria-label="Gift">
+        <!-- Step 5–6: Gift (locked by IQ game) -->
+        <div id="giftStage" class="gift-stage hidden">
+            <p id="giftHint" class="text-info fw-semibold mb-2" style="text-align:center; opacity:0.9;">
+                💾 Access restricted. Solve IQ challenge to decrypt your gift! 🔐
+            </p>
+          <div class="gift" id="gift" role="button" aria-label="Gift (tap to open)">
             <div class="lid"></div>
-            <div class="box"><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+            <div class="box">
+              <div class="ribbon-v"></div>
+              <div class="ribbon-h"></div>
+            </div>
           </div>
-          <div class="surprise text-center" id="surprise">
-            <div class="mb-2">Your bonus gift: uncontrollable giggles 😆</div>
-            <div class="boogie" aria-hidden="true">🕺🍌</div>
-            <p class="mt-3" id="joke"></p>
+
+          <div class="surprise" id="surprise">
+            <div class="emoji-burst" id="emojiBurst"></div>
+
+            <!-- Joker card appears after unlock -->
+            <div class="joker-card" id="jokerCard">
+                <svg class="clown" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <!-- (keep your existing clown SVG content here) -->
+                    <circle cx="64" cy="64" r="54" fill="#fff5f5"/>
+                    <circle cx="38" cy="54" r="10" fill="#ff6b6b"/>
+                    <circle cx="90" cy="54" r="10" fill="#4dabf7"/>
+                    <ellipse cx="64" cy="76" rx="26" ry="20" fill="#ffe8a3"/>
+                    <circle cx="64" cy="70" r="8" fill="#ff3b30"/>
+                    <path d="M42 86 Q64 102 86 86" stroke="#222" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <circle cx="48" cy="58" r="4" fill="#222"/>
+                    <circle cx="80" cy="58" r="4" fill="#222"/>
+                    <path d="M30 40 C40 28, 56 26, 64 34" stroke="#ff4d8d" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    <path d="M98 40 C88 28, 72 26, 64 34" stroke="#51cf66" stroke-width="6" fill="none" stroke-linecap="round"/>
+                </svg>
+
+                <div class="tech-title">Surprise 🤩</div>
+                <div class="tech-msg" id="giftMessage">
+                    "Birthday status: 200 OK ✅ Unique delivery confirmed — auto-assigning you joy and assigning me a
+                    <span class='treat-chip'>TREAT</span>. Please approve! 😜"
+                </div>
+            </div>
           </div>
         </div>
 
@@ -323,10 +511,9 @@
     </div>
   </main>
 
-  <!-- HELP / NEXT button -->
+  <!-- HELP / NEXT -->
   <button id="helpBtn" class="btn btn-info help-btn">❓ What do I do next?</button>
 
-  <!-- Help Modal -->
   <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-dark text-white border-light">
@@ -346,286 +533,348 @@
     </div>
   </div>
 
+  <!-- IQ Game Modal -->
+  <div class="modal fade" id="iqModal" tabindex="-1" aria-labelledby="iqTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white border-light">
+        <div class="modal-header">
+          <h5 class="modal-title" id="iqTitle">🤣 Funny IQ Challenge</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="iqIntro" class="mb-2">Answer 3 silly-smart riddles. Get <strong>2+</strong> right to unlock the gift!</div>
+          <div id="iqQuestion" class="fs-6 fw-semibold"></div>
+          <div id="iqChoices" class="mt-3"></div>
+          <div id="iqProgress" class="mt-3 small text-muted"></div>
+          <div id="iqFeedback" class="mt-2"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="iqNextBtn" type="button" class="btn btn-primary">Next</button>
+          <button id="iqRetryBtn" type="button" class="btn btn-outline-warning d-none">Retry</button>
+          <button id="iqCloseBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const body = document.body;
-  const music = document.getElementById('music');
+/* ========= ELEMENTS ========= */
+const body = document.body;
+const music = document.getElementById('music');
 
-  const doorsLayer = document.getElementById('doorsLayer');
-  const btnDoorKnob = document.getElementById('btnDoorKnob');
-  const doorLabel = doorsLayer.querySelector('.door-label');
+const doorsLayer   = document.getElementById('doorsLayer');
+const btnDoorKnob  = document.getElementById('btnDoorKnob');
 
-  const stepLights = document.getElementById('step-lights');
-  const btnLightsOn = document.getElementById('btnLightsOn');
+const stepLights   = document.getElementById('step-lights');
+const btnLightsOn  = document.getElementById('btnLightsOn');
 
-  const cakeWrap = document.getElementById('cakeWrap');
-  const stepCandle = document.getElementById('step-candle');
-  const stepBlow = document.getElementById('step-blow');
-  const flame = document.getElementById('flame');
-  const btnBlow = document.getElementById('btnBlow');
+const cakeWrap     = document.getElementById('cakeWrap');
+const stepCandle   = document.getElementById('step-candle');
+const btnLightCandle = document.getElementById('btnLightCandle');
+const stepBlow     = document.getElementById('step-blow');
+const btnBlow      = document.getElementById('btnBlow');
 
-  const balloonsLayer = document.getElementById('balloons');
-  const confettiLayer = document.getElementById('confetti');
-  const sparklesLayer = document.getElementById('sparkles');
+const flame        = document.getElementById('flame');
 
-  const messages = document.getElementById('messages');
-  const typeLine = document.getElementById('typeLine');
+const balloonsLayer = document.getElementById('balloons');
+const confettiLayer = document.getElementById('confetti');
+const sparklesLayer = document.getElementById('sparkles');
 
-  const giftStage = document.getElementById('giftStage');
-  const gift = document.getElementById('gift');
-  const surprise = document.getElementById('surprise');
-  const jokeP = document.getElementById('joke');
-  const btnReplay = document.getElementById('btnReplay');
+const messages     = document.getElementById('messages');
+const typeLine     = document.getElementById('typeLine');
 
-  /* Slower typewriter for readability */
-  const TYPE_SPEED = 40, LINE_PAUSE = 1400;
-  function typeText(lines, cb){
-    let i=0, j=0, current=''; typeLine.textContent='';
-    function nextLine(){
-      if(i>=lines.length){ cb && cb(); return; }
-      current = lines[i]; j=0; typeLine.textContent='';
-      const iv = setInterval(()=>{
-        typeLine.textContent = current.slice(0, ++j);
-        if(j>=current.length){ clearInterval(iv); setTimeout(()=>{ i++; nextLine(); }, LINE_PAUSE); }
-      }, TYPE_SPEED);
-    }
-    nextLine();
+const giftStage    = document.getElementById('giftStage');
+const gift         = document.getElementById('gift');
+const emojiBurst   = document.getElementById('emojiBurst');
+const jokerCard    = document.getElementById('jokerCard');
+const btnReplay    = document.getElementById('btnReplay');
+
+/* ========= HELP MODAL ========= */
+const helpBtn   = document.getElementById('helpBtn');
+const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
+const helpCurrent = document.getElementById('helpCurrent');
+const helpNext    = document.getElementById('helpNext');
+const helpGoBtn   = document.getElementById('helpGoBtn');
+
+/* ========= IQ MODAL ========= */
+const iqModal   = new bootstrap.Modal(document.getElementById('iqModal'));
+const iqQEl     = document.getElementById('iqQuestion');
+const iqChoices = document.getElementById('iqChoices');
+const iqProg    = document.getElementById('iqProgress');
+const iqFeed    = document.getElementById('iqFeedback');
+const iqNextBtn = document.getElementById('iqNextBtn');
+const iqRetryBtn= document.getElementById('iqRetryBtn');
+
+/* ========= UTIL ========= */
+const isSmall = () => window.innerWidth <= 420;
+function playMusicAuto(){ music.loop = true; music.volume = 0.7; const p = music.play(); if(p && p.catch){ p.catch(()=>{});} }
+function burstConfetti(n){
+  const total = n ?? (isSmall() ? 120 : 200);
+  confettiLayer.innerHTML='';
+  const colors=['#ff4d8d','#ffd43b','#4dabf7','#51cf66','#ffffff'];
+  for(let i=0;i<total;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.top  = -(Math.random()*40) + 'vh';
+    const w = 6 + Math.random()*8, h = 8 + Math.random()*12;
+    s.style.width = w+'px'; s.style.height=h+'px';
+    s.style.background = colors[i%colors.length];
+    s.style.animation = `fall ${4 + Math.random()*3}s linear ${Math.random()*1.5}s forwards`;
+    confettiLayer.appendChild(s);
   }
-
-  /* FX helpers (run only on non-phone via display check) */
-  function makeBalloonsSVG(){
-    if(!balloonsLayer) return;
-    const palettes = [
-      {light:'#ffd2e1', mid:'#ff7aa6', dark:'#d84c7a'},
-      {light:'#d6ebff', mid:'#74b3ff', dark:'#2a7bd9'},
-      {light:'#d7ffd9', mid:'#6fe07d', dark:'#2f9e44'},
-      {light:'#fff5cc', mid:'#ffd34d', dark:'#c99700'}
-    ];
-    const count = 18;
-    balloonsLayer.innerHTML=''; balloonsLayer.style.zIndex = 1;
-    for(let i=0; i<count; i++){
-      const p = palettes[i%palettes.length];
-      const wrap = document.createElement('div');
-      wrap.className = 'balloon-wrap';
-      let leftVW = Math.random()*100;
-      if(leftVW > 38 && leftVW < 62) leftVW = (Math.random()<.5)? (Math.random()*38) : (62 + Math.random()*38);
-      wrap.style.left = leftVW + 'vw';
-      wrap.style.setProperty('--drift', (Math.random()*80-40) + 'px');
-      wrap.style.setProperty('--twist', (Math.random()*12-6) + 'deg');
-      wrap.style.animation = `floatUp ${7 + Math.random()*6}s linear ${Math.random()*3}s infinite`;
-
-      const gradId = `g${i}-${Date.now()}`;
-      wrap.innerHTML = `
-        <svg class="balloon-svg" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs><radialGradient id="${gradId}" cx="50%" cy="35%" r="55%">
-            <stop offset="0%" stop-color="${p.light}"/><stop offset="60%" stop-color="${p.mid}"/><stop offset="100%" stop-color="${p.dark}"/>
-          </radialGradient></defs>
-          <path d="M45 10c-20 0-35 14-35 33 0 18 11 29 22 38 3 2 1 7-1 10l4 6 20 0 4-6c-2-3-4-8-1-10 11-9 22-20 22-38 0-19-15-33-34-33z" fill="url(#${gradId})"/>
-          <ellipse cx="35" cy="28" rx="7" ry="11" fill="#ffffff" opacity="0.5"/>
-          <path d="M45 92 L45 106" stroke="#666" stroke-width="2"/>
-        </svg>`;
-      const stringEl = document.createElement('div'); stringEl.className = 'balloon-string'; wrap.appendChild(stringEl);
-      balloonsLayer.appendChild(wrap);
-    }
+  setTimeout(()=> confettiLayer.innerHTML='', 9000);
+}
+function startSparkles(){
+  const count = isSmall() ? 28 : 50;
+  sparklesLayer.innerHTML='';
+  for(let i=0;i<count;i++){
+    const sp=document.createElement('span');
+    sp.style.left = Math.random()*100+'vw';
+    sp.style.bottom = Math.random()*30+'vh';
+    sp.style.animationDelay = (Math.random()*2.6)+'s';
+    sparklesLayer.appendChild(sp);
   }
-  function burstConfetti(n=160){
-    if(!confettiLayer) return;
-    confettiLayer.innerHTML='';
-    const colors=['#ff4d8d','#ffd43b','#4dabf7','#51cf66','#ffffff'];
-    for(let i=0;i<n;i++){
-      const s = document.createElement('span');
-      s.style.left = Math.random()*100 + 'vw';
-      s.style.top = - (Math.random()*40) + 'vh';
-      const w = 6 + Math.random()*8, h = 8 + Math.random()*12;
-      s.style.width = w + 'px'; s.style.height = h + 'px';
-      s.style.background = colors[i%colors.length];
-      s.style.animation = `fall ${4 + Math.random()*3}s linear ${Math.random()*1.5}s forwards`;
-      confettiLayer.appendChild(s);
-    }
-    setTimeout(()=> confettiLayer.innerHTML='', 9000);
+}
+function makeBalloonsSVG(){
+  const count = isSmall()? 10 : 20; balloonsLayer.innerHTML='';
+  const palettes=[{light:'#ffd2e1',mid:'#ff7aa6',dark:'#d84c7a'},{light:'#d6ebff',mid:'#74b3ff',dark:'#2a7bd9'},{light:'#d7ffd9',mid:'#6fe07d',dark:'#2f9e44'},{light:'#fff5cc',mid:'#ffd34d',dark:'#c99700'}];
+  for(let i=0;i<count;i++){
+    const p=palettes[i%palettes.length],wrap=document.createElement('div');wrap.className='balloon-wrap';
+    let leftVW=Math.random()*100; if(leftVW>38&&leftVW<62) leftVW=(Math.random()<.5)? (Math.random()*38):(62+Math.random()*38);
+    wrap.style.left=leftVW+'vw'; wrap.style.setProperty('--drift',(Math.random()*80-40)+'px'); wrap.style.setProperty('--twist',(Math.random()*12-6)+'deg');
+    wrap.style.animation=`floatUp ${7+Math.random()*6}s linear ${Math.random()*3}s infinite`;
+    const gradId=`g${i}-${Date.now()}`;
+    wrap.innerHTML=`
+      <svg class="balloon-svg" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><radialGradient id="${gradId}" cx="50%" cy="35%" r="55%">
+          <stop offset="0%" stop-color="${p.light}"/><stop offset="60%" stop-color="${p.mid}"/><stop offset="100%" stop-color="${p.dark}"/>
+        </radialGradient></defs>
+        <path d="M45 10c-20 0-35 14-35 33 0 18 11 29 22 38 3 2 1 7-1 10l4 6 20 0 4-6c-2-3-4-8-1-10 11-9 22-20 22-38 0-19-15-33-34-33z" fill="url(#${gradId})"/>
+        <ellipse cx="35" cy="28" rx="7" ry="11" fill="#ffffff" opacity="0.5"/>
+        <path d="M45 92 L45 106" stroke="#666" stroke-width="2"/>
+      </svg>`;
+    const stringEl=document.createElement('div'); stringEl.className='balloon-string'; wrap.appendChild(stringEl);
+    balloonsLayer.appendChild(wrap);
   }
-  function startSparkles(){
-    if(!sparklesLayer) return;
-    sparklesLayer.innerHTML='';
-    for(let i=0;i<50;i++){
-      const sp = document.createElement('span');
-      sp.style.left = Math.random()*100 + 'vw';
-      sp.style.bottom = Math.random()*30 + 'vh';
-      sp.style.animationDelay = (Math.random()*2.6) + 's';
-      sparklesLayer.appendChild(sp);
-    }
+}
+const TYPE_SPEED=60, LINE_PAUSE=2200;
+function typeText(lines, cb){
+  let i=0,j=0,current=''; typeLine.textContent='';
+  function nextLine(){
+    if(i>=lines.length){ cb&&cb(); return; }
+    current=lines[i]; j=0; typeLine.textContent='';
+    const iv=setInterval(()=>{
+      typeLine.textContent=current.slice(0,++j);
+      if(j>=current.length){ clearInterval(iv); setTimeout(()=>{ i++; nextLine(); }, LINE_PAUSE); }
+    }, TYPE_SPEED);
+  } nextLine();
+}
+function spawnEmojiBurst(){
+  const emojis=['💖','✨','🎉','💝','⭐','🎈','🥳']; emojiBurst.innerHTML='';
+  const total=isSmall()?10:16;
+  for(let i=0;i<total;i++){
+    const span=document.createElement('span'); span.textContent=emojis[i%emojis.length];
+    span.style.setProperty('--dx',(Math.random()*160-80)+'px');
+    span.style.setProperty('--dy',(-80-Math.random()*100)+'px');
+    span.style.left=(Math.random()*60-30)+'px'; span.style.animationDelay=(Math.random()*0.15)+'s';
+    emojiBurst.appendChild(span);
   }
+}
 
-  /* Music */
-  function playMusicAuto(){
-    music.loop = true; music.volume = 0.7;
-    const p = music.play(); if(p && p.catch){ p.catch(()=>{}); }
-  }
+/* ========= STATE MACHINE =========
+   0: at door
+   1: lights step visible
+   2: candle lighting step visible
+   3: blow step visible
+   4: typing messages
+   5: gift stage visible (locked by IQ)
+   6: gift opened
+===================================*/
+let STAGE = 0;
+let giftUnlocked = false;
 
-  /* FLOW */
-  btnDoorKnob.addEventListener('click', ()=>{
-    body.classList.add('open');
-    btnDoorKnob.style.display = 'none';
-    doorLabel.style.display = 'none';
-    setTimeout(()=>{ doorsLayer.style.display = 'none'; }, 1150);
+/* Ensure initial visibility */
+function resetVisibility(){
+  stepLights.classList.remove('hidden');            // only first step visible
+  cakeWrap.classList.add('hidden');
+  stepCandle.classList.add('hidden');
+  stepBlow.classList.add('hidden');
+  messages.classList.add('hidden');
+  giftStage.classList.add('hidden');
+}
+resetVisibility();
+
+/* ========= DOOR -> STAGE 1 ========= */
+btnDoorKnob.addEventListener('click', ()=>{
+  if(STAGE !== 0) return;
+  body.classList.add('open');
+  btnDoorKnob.setAttribute('disabled','disabled');
+  setTimeout(()=>{
+    doorsLayer.style.display='none';
+    STAGE = 1;
     window.scrollTo({top:0, behavior:'smooth'});
-  });
+  }, 1150);
+});
 
-  btnLightsOn.addEventListener('click', ()=>{
-    body.classList.add('lights-on');
-    stepLights.classList.add('hidden');
-    cakeWrap.classList.remove('hidden');
-    playMusicAuto();
+/* ========= LIGHTS ON -> STAGE 2 ========= */
+btnLightsOn.addEventListener('click', ()=>{
+  if(STAGE !== 1) return;
+  body.classList.add('lights-on');
+  stepLights.classList.add('hidden');
+  cakeWrap.classList.remove('hidden');
+  stepCandle.classList.remove('hidden');     // show “Light Candle”
+  playMusicAuto();
+  makeBalloonsSVG(); startSparkles(); burstConfetti();
+  STAGE = 2;
+  cakeWrap.scrollIntoView({behavior:'smooth', block:'center'});
+});
 
-    if(getComputedStyle(balloonsLayer || document.body).display !== 'none') makeBalloonsSVG();
-    if(getComputedStyle(sparklesLayer || document.body).display !== 'none') startSparkles();
-    if(getComputedStyle(confettiLayer || document.body).display !== 'none') burstConfetti(200);
+/* ========= LIGHT CANDLE -> STAGE 3 ========= */
+function lightCandle(){
+  if(STAGE !== 2) return;
+  flame.style.opacity='1'; flame.classList.add('flicker');
+  stepCandle.classList.add('hidden');        // hide “Light Candle”
+  stepBlow.classList.remove('hidden');       // show “Blow Candle”
+  STAGE = 3;
+}
+document.getElementById('candle').addEventListener('click', lightCandle);
+document.getElementById('candle').addEventListener('keydown', (e)=>{ if((e.key==='Enter'||e.key===' ')){ e.preventDefault(); lightCandle(); }});
+btnLightCandle.addEventListener('click', lightCandle);
 
-    cakeWrap.scrollIntoView({behavior:'smooth', block:'center'});
-  });
+/* ========= BLOW CANDLE -> STAGE 4 then 5 ========= */
+function blowOut(){
+  if(STAGE !== 3) return;
+  flame.style.opacity='0'; flame.classList.remove('flicker');
+  stepBlow.classList.add('hidden');
+  messages.classList.remove('hidden');
+  STAGE = 4;
 
-  function lightCandle(){
-    flame.style.opacity = 1; flame.classList.add('flicker');
-    stepCandle.classList.add('hidden'); stepBlow.classList.remove('hidden');
-  }
-  document.getElementById('candle').addEventListener('click', lightCandle);
-  document.getElementById('candle').addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); lightCandle(); }});
-
-  function blowOut(){
-    flame.style.opacity = 0; flame.classList.remove('flicker');
-    stepBlow.classList.add('hidden');
-    const lines = [
-      '🎉 Happy Birthday!',
-      "Send from Khorshed Alom",      
-        "Count your life by smiles, not tears",      
-        "Count your age by friends, not years",      
-        "Beloved Respected APU", 
-        "Today is your birthday",
-        "Wish you happy returns of the day",
-        "শুভ পয়দা দিবস",
-        "Happy Downloading... Day",
-        "Lots Of love",
-    ];
-    messages.classList.remove('hidden');
-    typeText(lines, ()=>{
-      giftStage.classList.remove('hidden');
-      const giftEl = document.querySelector('.gift'); if(giftEl){ giftEl.style.opacity = 1; giftEl.style.transform='none'; }
-      if(getComputedStyle(confettiLayer || document.body).display !== 'none') burstConfetti(160);
-    });
-  }
-  btnBlow.addEventListener('click', blowOut);
-
-  const jokes = [
-    'I bought you a candle. It was a little wick-spensive. 🕯️',
-    'Aging is like software updates: mostly security patches. 😅',
-    'Why did the cake go to therapy? Too many layers. 🍰',
-    'Birthdays are good for you. The more you have, the longer you live. 📈',
-    'You don’t look a day over fabulous. ✨'
+  const lines = [
+    '🎉 Happy Birthday!',
+    'Sent from Khorshed Alom',
+    'Count your life by smiles, not tears',
+    'Count your age by friends, not years',
+    'Beloved Respected — wish you joy!',
+    'শুভ পয়দা দিবস — Happy Downloading Day!',
+    'Lots Of love 💖'
   ];
-  if(gift) gift.addEventListener('click', ()=>{
-    gift.classList.add('open'); surprise.style.display='block';
-    jokeP.textContent = jokes[Math.floor(Math.random()*jokes.length)];
-    if(getComputedStyle(confettiLayer || document.body).display !== 'none') burstConfetti(200);
-    btnReplay.classList.remove('hidden');
+  typeText(lines, ()=>{
+    giftStage.classList.remove('hidden');    // reveal gift after messages
+    burstConfetti(isSmall()?100:160);
+    giftStage.scrollIntoView({behavior:'smooth', block:'center'});
+    STAGE = 5;  // gift available (locked by IQ)
   });
+}
+btnBlow.addEventListener('click', blowOut);
+document.addEventListener('keydown', (e)=>{ if(STAGE===3 && (e.key===' '||e.key==='Enter')){ e.preventDefault(); blowOut(); }});
 
-  btnReplay.addEventListener('click', ()=>{
-    music.pause(); music.currentTime=0;
-    body.className='';
-    doorsLayer.style.display='';
-    btnDoorKnob.style.display='flex'; doorLabel.style.display='block';
-    [cakeWrap, messages, giftStage, btnReplay].forEach(el=>el.classList.add('hidden'));
-    stepLights.classList.remove('hidden');
-    typeLine.textContent='';
-    if(balloonsLayer) balloonsLayer.innerHTML=''; if(confettiLayer) confettiLayer.innerHTML=''; if(sparklesLayer) sparklesLayer.innerHTML='';
-    flame.style.opacity=0; flame.classList.remove('flicker');
-    surprise.style.display='none'; gift.classList.remove('open');
-    const giftDom = document.querySelector('.gift'); if(giftDom){ giftDom.style.opacity=0; giftDom.style.transform='translateY(10px)'; }
-    window.scrollTo({top:0, behavior:'smooth'});
+/* ========= IQ (funnier riddles; pick 3 random each time) ========= */
+const QUESTION_POOL = [
+  { q:'Which has many keys but can’t open a single lock?', choices:['Keyboard','Treasure chest','Hotel','Car dealer'], correct:0 },
+  { q:'I get wetter the more I dry. What am I?', choices:['Sponge','Raincoat','Towel','Hair'], correct:2 },
+  { q:'What goes up but never comes down?', choices:['Age','Balloon','Elevator','Prices on Fridays'], correct:0 },
+  { q:'You see me once in June, twice in November, and never in May. What am I?', choices:['Letter E','Letter N','Letter U','Calendar'], correct:0 },
+  { q:'If a plane crashes on the border of Bangladesh and India, where do they bury the survivors?', choices:['Bangladesh','India','Half in each','Nowhere—they\'re survivors'], correct:3 },
+  { q:'Which is heavier: 1 kg of iron or 1 kg of cotton?', choices:['Iron','Cotton','Same weight','Depends on humidity 😅'], correct:2 },
+  { q:'What has a head and a tail but no body?', choices:['Comet','Coin','Lizard (on break)','Kite'], correct:1 },
+  { q:'If you have it, you want to share it. If you share it, you don\'t have it. What is it?', choices:['Money','Secret','Wi-Fi password','Chocolate'], correct:1 },
+  { q:'What can fill a room but takes up no space?', choices:['Light','Air','A good joke','Music'], correct:0 },
+  { q:'I’m tall when I’m young, and short when I’m old. What am I?', choices:['Candle','Tree','Human','Pencil'], correct:0 }
+];
+function sample(arr, n){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a.slice(0,n);
+}
+let QUESTIONS=[], iqIndex=0, iqScore=0, picked=null;
+
+function renderIQ(){
+  const item=QUESTIONS[iqIndex];
+  iqQEl.textContent=item.q; iqChoices.innerHTML=''; picked=null;
+  item.choices.forEach((c,idx)=>{
+    const b=document.createElement('button'); b.type='button';
+    b.className='btn btn-outline-light w-100 text-start my-1'; b.textContent=c;
+    b.onclick=()=>{ picked=idx; [...iqChoices.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
+    iqChoices.appendChild(b);
   });
-
-  // ====== HELP / NEXT BUTTON LOGIC ======
-  const helpBtn = document.getElementById('helpBtn');
-  const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
-  const helpCurrent = document.getElementById('helpCurrent');
-  const helpNext = document.getElementById('helpNext');
-  const helpGoBtn = document.getElementById('helpGoBtn');
-
-  function getStepStatus(){
-    const isDoorOpen   = body.classList.contains('open') && doorsLayer.style.display === 'none';
-    const hasLights    = body.classList.contains('lights-on');
-    const candleLit    = flame.classList.contains('flicker') && flame.style.opacity !== '0';
-    const canBlow      = !stepBlow.classList.contains('hidden');
-    const giftShown    = !giftStage.classList.contains('hidden');
-    const giftOpened   = gift.classList.contains('open');
-
-    if(!isDoorOpen){
-      return {
-        step: 1,
-        current: 'You are at the door.',
-        next: 'Press the big round button to open the door.',
-        target: btnDoorKnob
-      };
-    }
-    if(isDoorOpen && !hasLights){
-      return {
-        step: 2,
-        current: 'You entered the room.',
-        next: 'Tap “Turn on Lights” to reveal the surprise.',
-        target: btnLightsOn
-      };
-    }
-    if(hasLights && !candleLit){
-      return {
-        step: 3,
-        current: 'The room is lit up ✨',
-        next: 'Tap the candle on the cake to light it.',
-        target: document.getElementById('candle')
-      };
-    }
-    if(candleLit && canBlow){
-      return {
-        step: 4,
-        current: 'Candle is lit 🔥',
-        next: 'Make a wish and press “Blow Candle”.',
-        target: btnBlow
-      };
-    }
-    if(giftShown && !giftOpened){
-      return {
-        step: 5,
-        current: 'Birthday message shown 🎉',
-        next: 'Tap the gift box to open it.',
-        target: gift
-      };
-    }
-    return {
-      step: 6,
-      current: 'All done! Enjoy your surprise 😄',
-      next: 'You can press Replay to start again.',
-      target: btnReplay
-    };
+  iqProg.textContent=`Question ${iqIndex+1} of ${QUESTIONS.length} • Score: ${iqScore}`;
+  iqFeed.textContent=''; iqNextBtn.textContent=iqIndex===QUESTIONS.length-1?'Finish':'Next';
+  iqRetryBtn.classList.add('d-none');
+}
+function startIQ(){
+  QUESTIONS = sample(QUESTION_POOL, 3);
+  iqIndex=0; iqScore=0; picked=null; renderIQ(); iqModal.show();
+}
+iqNextBtn.addEventListener('click', ()=>{
+  if(picked===null){ iqFeed.innerHTML='<span class="text-warning">Choose an answer to continue.</span>'; return; }
+  if(picked===QUESTIONS[iqIndex].correct) iqScore++;
+  if(++iqIndex<QUESTIONS.length){ renderIQ(); }
+  else{
+    const passed = iqScore>=2;
+    iqQEl.textContent = passed? '✅ You passed the Funny IQ!':'❌ Close… but the clown says try again!';
+    iqChoices.innerHTML=''; iqProg.textContent=`Score: ${iqScore}/${QUESTIONS.length}`;
+    iqFeed.innerHTML = passed? '<span class="text-success">Gift unlocked! Close this to open 🎁</span>' : '<span class="text-warning">Get 2+ right. Tap Retry.</span>';
+    iqNextBtn.classList.add('d-none'); iqRetryBtn.classList.toggle('d-none', passed);
+    giftUnlocked = passed;
   }
+});
+iqRetryBtn.addEventListener('click', ()=>{ iqNextBtn.classList.remove('d-none'); startIQ(); });
 
-  helpBtn.addEventListener('click', ()=>{
-    const s = getStepStatus();
-    helpCurrent.textContent = `Current step: ${s.current}`;
-    helpNext.textContent = `Next: ${s.next}`;
-    helpModal.show();
-    helpGoBtn.onclick = ()=>{
-      helpModal.hide();
-      if(s.target && typeof s.target.scrollIntoView === 'function'){
-        s.target.scrollIntoView({behavior:'smooth', block:'center'});
-        // focus if it's a button
-        if(s.target.focus) setTimeout(()=>s.target.focus(), 450);
-      }
-    };
-  });
+/* ========= GIFT (only after STAGE 5) ========= */
+gift.addEventListener('click', ()=>{
+  if(STAGE < 5) return;               // block early clicks
+  if(!giftUnlocked){
+    startIQ();
+    const modalEl=document.getElementById('iqModal');
+    modalEl.addEventListener('hidden.bs.modal', function onHide(){
+      modalEl.removeEventListener('hidden.bs.modal', onHide);
+      if(giftUnlocked) openGift();
+    });
+  }else{
+    if(!gift.classList.contains('open')) openGift();
+    else { spawnEmojiBurst(); burstConfetti(isSmall()?100:160); }
+  }
+});
+function openGift(){
+  gift.classList.add('open');
+  spawnEmojiBurst(); burstConfetti(isSmall()?140:200);
+  btnReplay.classList.remove('hidden');
+  STAGE = 6;
+}
 
-  // Keyboard blow (accessibility)
-  document.addEventListener('keydown', (e)=>{
-    if(stepBlow && !stepBlow.classList.contains('hidden') && (e.key===' ' || e.key==='Enter')){ e.preventDefault(); blowOut(); }
-  });
+/* ========= REPLAY ========= */
+btnReplay.addEventListener('click', ()=>{
+  music.pause(); music.currentTime=0;
+  body.className='';
+  doorsLayer.style.display=''; btnDoorKnob.removeAttribute('disabled');
+  flame.style.opacity='0'; flame.classList.remove('flicker');
+  gift.classList.remove('open'); emojiBurst.innerHTML=''; jokerCard?.classList?.remove('show');
+  giftUnlocked=false; STAGE=0; resetVisibility();
+  balloonsLayer.innerHTML=''; confettiLayer.innerHTML=''; sparklesLayer.innerHTML=''; typeLine.textContent='';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ========= HELP / NEXT ========= */
+function getStepStatus(){
+  switch(STAGE){
+    case 0: return {current:'You are at the door.', next:'Press the big round button to enter.', target:btnDoorKnob};
+    case 1: return {current:'Inside the room.',      next:'Tap “Turn on Lights”.',           target:btnLightsOn};
+    case 2: return {current:'Room is lit ✨',         next:'Tap “Light Candle 🔥” or the candle.', target:btnLightCandle};
+    case 3: return {current:'Candle is lit 🔥',      next:'Make a wish, then press “Blow Candle 💨”.', target:btnBlow};
+    case 4: return {current:'Birthday messages typing…', next:'Wait a moment — the gift will appear.', target:typeLine};
+    case 5: return {current:'Gift is ready 🎁',      next:'Tap the gift, pass Funny IQ to open.', target:gift};
+    case 6: return {current:'All done! 🎉',          next:'Tap Replay to start again.',       target:btnReplay};
+  }
+}
+helpBtn.addEventListener('click', ()=>{
+  const s=getStepStatus();
+  helpCurrent.textContent=`Current: ${s.current}`;
+  helpNext.textContent=`Next: ${s.next}`;
+  helpModal.show();
+  helpGoBtn.onclick=()=>{ helpModal.hide(); s.target?.scrollIntoView?.({behavior:'smooth', block:'center'}); s.target?.focus?.(); };
+});
 </script>
+
 </body>
 </html>
