@@ -18,7 +18,8 @@
   }
 
   *, *::before, *::after{ box-sizing:border-box; }
-  html, body { height:100%; }
+  html, body { min-height:100%; }
+  html{ scroll-behavior:smooth; }
   body{
     margin:0; color:#fff; overflow-x:hidden;
     font-family:'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial;
@@ -41,7 +42,7 @@
   }
 
   .scene{
-    position:relative; min-height:100vh;
+    position:relative; min-height:100vh; min-height:100dvh;
     display:flex; align-items:center; justify-content:center; text-align:center;
     padding:clamp(4rem, 6vw, 10rem) 1rem clamp(3.5rem, 5vw, 6rem);
     z-index:1;
@@ -247,7 +248,26 @@
     animation: hueflow 9s ease-in-out infinite alternate;
   }
 
-  .controls .btn{ min-width: 48px; min-height: 44px; }
+  .controls .btn, .gift-actions .btn{ min-width:48px; min-height:44px; }
+
+  .gift-hint{
+    max-width:560px; margin:0 auto 12px; padding:10px 14px; border-radius:999px;
+    background:rgba(94,234,212,.08); border:1px solid rgba(94,234,212,.25);
+    color:#bffbf2; font-weight:700; font-size:.95rem;
+  }
+  .birthday-status{
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:14px 0;
+  }
+  .status-pill{
+    padding:9px 8px; border-radius:14px; background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12); font-size:.78rem; line-height:1.25;
+  }
+  .status-pill strong{ display:block; color:#ffe8a3; font-size:.84rem; margin-bottom:2px; }
+  .funny-line{ min-height:2.8em; margin:10px 0 0; color:#dcecff; font-size:.9rem; }
+  .gift-actions{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:12px; }
+  .gift-actions .btn{ border-radius:999px; font-size:.85rem; padding:.55rem .85rem; }
+  .replay-wrap{ max-width:420px; margin-left:auto; margin-right:auto; }
+  .gift:focus-visible, .candle-hit:focus-visible, .door-button:focus-visible{ outline:3px solid #fff; outline-offset:4px; }
   .btn-lg{ padding:.8rem 1.1rem; font-size:1rem; border-radius:14px; }
 
   .help-btn{
@@ -258,21 +278,277 @@
   }
 
   @media (max-width: 768px){
-    .scene{ padding-top:6.5rem; padding-bottom:4.5rem; }
-    .table-surface{ height:36px; border-radius:12px; }
-    .door-button{ width:min(120px, 42vw); height:min(120px,42vw); }
-    .door-label{ top:calc(50% + 84px); }
-    .joker-card{ width:min(94vw, 560px); }
+    .scene{ align-items:flex-start; padding:4.75rem .85rem calc(5.25rem + env(safe-area-inset-bottom, 0px)); }
+    .scene > .row{ margin:0; }
+    .table-surface{ height:30px; border-radius:12px; width:min(92vw,700px); }
+    .cake-svg{ width:min(96vw,520px); margin-top:.85rem; }
+    .door-button{ width:min(118px, 34vw); height:min(118px,34vw); }
+    .door-label{ top:calc(50% + 84px); width:88vw; }
+    .joker-card{ width:min(94vw, 560px); padding:16px 13px; }
+    .gift{ width:min(205px,58vw); height:min(165px,46vw); }
+    .help-btn{ padding:10px 13px; font-size:.82rem; }
+    .inline-banner .hb-text{ letter-spacing:1px; }
   }
-  @media (max-width: 420px){
-    .bunting{ height:64px; }
-    .string-lights{ height:82px; top:2px; }
-    .message-card{ margin:10px auto 16px; padding:12px 14px; border-radius:16px; }
-    .clown{ width:88px; height:88px; }
+  @media (max-width: 480px){
+    .scene{ padding-top:3.6rem; }
+    .neon{ margin-bottom:.35rem; }
+    .message-card{ margin:10px auto 14px; padding:12px; border-radius:16px; }
+    #typeLine{ font-size:clamp(1.08rem,5.3vw,1.45rem); }
+    .surprise-image{ width:min(88vw,380px); max-height:44vh; border-radius:15px; }
+    .birthday-status{ grid-template-columns:1fr; gap:6px; }
+    .status-pill{ padding:8px 10px; font-size:.8rem; }
+    .gift-actions{ display:grid; grid-template-columns:1fr; }
+    .gift-actions .btn{ width:100%; }
+    .help-btn{ right:10px; bottom:10px; max-width:52vw; white-space:normal; line-height:1.1; }
+    .btn-lg{ font-size:.95rem; }
+  }
+  @media (max-width: 360px){
+    .scene{ padding-left:.55rem; padding-right:.55rem; }
+    .inline-banner .hb-text{ font-size:1.55rem; }
+    .gift{ width:185px; height:150px; }
+    .door-button{ min-width:90px; min-height:90px; }
+    .help-btn{ font-size:.76rem; }
+  }
+
+  /* Mobile-first polish */
+  .intro-reveal-item{
+    opacity:0; transform:translateY(14px); pointer-events:none;
+    transition:opacity .85s ease, transform .85s cubic-bezier(.2,.8,.2,1);
+  }
+  .intro-reveal-item.show{ opacity:1; transform:none; pointer-events:auto; }
+
+  @media (max-width: 600px){
+    body{
+      background:linear-gradient(180deg, #131a2b 0 58%, #0a0e18 58% 100%);
+    }
+    body:after{ top:58%; opacity:.65; }
+    .scene{
+      min-height:100dvh; align-items:flex-start;
+      padding:calc(1.15rem + env(safe-area-inset-top, 0px)) .78rem calc(6rem + env(safe-area-inset-bottom, 0px));
+    }
+    .scene > .row, .scene .col-12{ width:100%; margin:0; padding:0; }
+    .neon{
+      font-size:clamp(1.08rem, 5vw, 1.34rem) !important;
+      line-height:1.28; margin:0 auto .45rem; max-width:92vw;
+    }
+    .inline-banner{ margin:.25rem auto .85rem; padding:0 .2rem; }
+    .inline-banner .hb-text{
+      font-size:clamp(1.75rem, 9vw, 2.45rem);
+      line-height:1.05; letter-spacing:.4px; max-width:95vw;
+    }
+    .prompt{
+      max-width:92vw; margin-left:auto; margin-right:auto;
+      font-size:.94rem; line-height:1.5; color:rgba(255,255,255,.9);
+    }
+    #step-lights{ width:100%; max-width:420px; margin:.45rem auto 0 !important; }
+    #step-lights small{ font-size:.76rem; line-height:1.4; }
+    .controls .btn, #step-candle .btn, #step-blow .btn{
+      width:100% !important; min-height:52px; border-radius:15px;
+      font-size:.98rem; font-weight:700;
+    }
+    .cake-wrap{ width:100%; margin-top:.25rem; }
+    .cake-svg{
+      width:min(100%, 390px); max-height:43vh; margin:.45rem auto 0;
+    }
+    .table-surface{ width:min(92vw, 390px); height:24px; border-radius:10px; }
+    #step-candle, #step-blow{ width:100%; max-width:390px; margin-left:auto; margin-right:auto; }
+    .message-card{
+      width:100%; margin:12px auto 16px; padding:14px 13px; border-radius:17px;
+    }
+    #typeLine{
+      font-size:clamp(1.08rem, 5.4vw, 1.42rem);
+      line-height:1.42; min-height:3.1em;
+    }
+    .gift-stage{ width:100%; max-width:430px; margin:12px auto 0; }
+    .gift-hint{
+      width:100%; border-radius:15px; padding:10px 12px;
+      font-size:.86rem; line-height:1.35;
+    }
+    .gift{ width:188px; height:150px; margin-top:.3rem; }
+    .gift .lid{ height:46px; bottom:calc(100% - 46px); }
+    .gift.open .lid{ transform:translate(-50%,-94px) rotate(-10deg); }
+    .surprise{ width:100%; }
+    .joker-card{
+      left:0; width:100%; margin:12px 0 8px; padding:15px 12px 14px;
+      border-radius:18px; transform:translateY(10px) scale(.985);
+    }
+    .gift.open + .surprise .joker-card{ transform:translateY(0) scale(1); }
+    .surprise-image{
+      width:100%; max-width:340px; max-height:48vh; margin:.25rem auto 12px;
+      border-radius:16px; object-position:center;
+    }
+    .joker-card .tech-title{ font-size:1rem; line-height:1.35; }
+    .joker-card .tech-msg{ font-size:.82rem; line-height:1.5; overflow-wrap:anywhere; }
+    .birthday-status{ grid-template-columns:repeat(3,1fr); gap:6px; margin:12px 0; }
+    .status-pill{ padding:8px 5px; font-size:.68rem; min-width:0; }
+    .status-pill strong{ font-size:.72rem; }
+    .funny-line{ font-size:.82rem; line-height:1.45; min-height:0; margin:10px 2px 0; }
+    .gift-actions{ display:grid; grid-template-columns:1fr 1fr; gap:7px; width:100%; }
+    .gift-actions .btn{
+      width:100%; min-height:48px; padding:.55rem .55rem; font-size:.76rem; line-height:1.2;
+      white-space:normal;
+    }
+    .replay-wrap{ width:100%; max-width:430px; margin-top:14px !important; }
+    .replay-wrap .btn{ min-height:46px; border-radius:14px; }
+    .help-btn{
+      left:12px; right:12px; bottom:max(10px, calc(env(safe-area-inset-bottom, 0px) + 10px));
+      width:auto; max-width:none; min-height:46px; padding:9px 12px;
+      font-size:.78rem; line-height:1.2; background:rgba(13,202,240,.94);
+      backdrop-filter:blur(8px);
+    }
+    .door-button{ width:112px; height:112px; min-width:112px; min-height:112px; }
+    .door-button span{ font-size:12px; }
+  }
+
+  @media (max-width: 380px){
+    .scene{ padding-left:.58rem; padding-right:.58rem; }
+    .inline-banner .hb-text{ font-size:1.7rem; }
+    .cake-svg{ max-height:40vh; }
+    .gift{ width:174px; height:140px; }
+    .gift-actions{ grid-template-columns:1fr; }
+    .birthday-status{ gap:4px; }
+    .status-pill{ font-size:.64rem; padding:7px 3px; }
+    .status-pill strong{ font-size:.68rem; }
+  }
+
+
+  /* Gift popup card */
+  .gift-card-overlay{
+    position:fixed;
+    inset:0;
+    z-index:120;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:rgba(4,8,18,.78);
+    backdrop-filter:blur(9px);
+    -webkit-backdrop-filter:blur(9px);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .35s ease, visibility .35s ease;
+  }
+  .gift-card-overlay.show{
+    opacity:1;
+    visibility:visible;
+  }
+  .gift-popup-card{
+    position:relative;
+    width:min(94vw, 560px);
+    max-height:calc(100dvh - 36px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    padding:22px 18px 18px;
+    border-radius:22px;
+    text-align:center;
+    background:
+      radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,.18), rgba(255,255,255,.06) 60%),
+      rgba(12,18,34,.96);
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 24px 70px rgba(0,0,0,.62), 0 0 30px rgba(255,77,141,.22);
+    transform:translateY(22px) scale(.94);
+    opacity:0;
+    transition:transform .42s cubic-bezier(.2,.85,.2,1), opacity .35s ease;
+    scrollbar-width:thin;
+  }
+  .gift-card-overlay.show .gift-popup-card{
+    transform:translateY(0) scale(1);
+    opacity:1;
+  }
+  .gift-card-close{
+    position:sticky;
+    top:0;
+    float:right;
+    margin:-10px -7px 2px 8px;
+    width:40px;
+    height:40px;
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:50%;
+    background:rgba(0,0,0,.32);
+    color:#fff;
+    font-size:1.65rem;
+    line-height:1;
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    z-index:3;
+    touch-action:manipulation;
+  }
+  .gift-card-close:active{ transform:scale(.96); }
+
+  .gift-popup-card .popup-image{
+    opacity:1 !important;
+    transform:none !important;
+    width:min(100%, 360px);
+    max-height:46vh;
+    margin:4px auto 14px;
+  }
+  .gift-popup-card .tech-title{
+    font-family:'Orbitron', system-ui, sans-serif;
+    font-weight:700;
+    letter-spacing:.5px;
+    font-size:1.08rem;
+    margin-bottom:8px;
+    background:linear-gradient(90deg,#ffe8a3,#ffd43b,#ff66a3);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 0 12px rgba(255,232,163,.35);
+  }
+  .gift-popup-card .tech-msg{
+    font-family:'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size:.93rem;
+    line-height:1.5;
+    color:#e6f1ff;
+  }
+
+  @media (max-width:600px){
+    .gift-card-overlay{
+      align-items:center;
+      padding:
+        max(10px, env(safe-area-inset-top, 0px))
+        10px
+        max(10px, env(safe-area-inset-bottom, 0px));
+    }
+    .gift-popup-card{
+      width:100%;
+      max-height:calc(100dvh - 20px);
+      padding:18px 13px 14px;
+      border-radius:20px;
+    }
+    .gift-popup-card .popup-image{
+      width:100%;
+      max-width:330px;
+      max-height:38vh;
+      object-fit:cover;
+      border-radius:15px;
+    }
+    .gift-popup-card .tech-title{
+      font-size:1rem;
+      line-height:1.35;
+    }
+    .gift-popup-card .tech-msg{
+      font-size:.8rem;
+      line-height:1.5;
+      overflow-wrap:anywhere;
+    }
+    .gift-popup-card .birthday-status{
+      grid-template-columns:repeat(3,1fr);
+      gap:5px;
+    }
+    .gift-popup-card .gift-actions{
+      grid-template-columns:1fr;
+      gap:8px;
+    }
+    .gift-popup-card .gift-actions .btn{
+      min-height:48px;
+      font-size:.8rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
+    .intro-reveal-item{ opacity:1 !important; transform:none !important; pointer-events:auto !important; }
   }
 </style>
 </head>
@@ -351,15 +627,15 @@
   <main class="scene container-fluid">
     <div class="row justify-content-center w-100">
       <div class="col-12 col-sm-11 col-md-9 col-lg-7 mx-auto">
-        <h1 class="neon" style="font-size:clamp(1.2rem, 2.4vw + .9rem, 2rem);">🤫 A Surprise Awaits!</h1>
+        <h1 id="introTitle" class="neon intro-reveal-item" style="font-size:clamp(1.2rem, 2.4vw + .9rem, 2rem);">✨ A Little Birthday Surprise</h1>
 
-        <div class="inline-banner">
+        <div id="introBanner" class="inline-banner intro-reveal-item">
           <div class="hb-text">🎉 Happy Birthday! 🎂</div>
         </div>
 
         <!-- Step 1 -->
-        <div id="step-lights" class="mt-2">
-          <p class="prompt mb-2">It’s dark inside. Turn on the lights to reveal the surprise.</p>
+        <div id="step-lights" class="mt-2 intro-reveal-item">
+          <p class="prompt mb-2">The room is ready — turn on the lights and start the celebration.</p>
           <div class="d-grid gap-2 d-sm-flex justify-content-center controls">
             <button id="btnLightsOn" class="btn btn-success btn-lg px-4 w-100 w-sm-auto">Turn on Lights 💡</button>
           </div>
@@ -390,14 +666,14 @@
           <div class="table-surface" aria-hidden="true"></div>
 
           <div id="step-candle" class="mt-2 hidden">
-            <p class="prompt mb-2">Tap the candle or use the button to light it 🕯️</p>
+            <p class="prompt mb-2">Light the candle — birthday protocol requires it. 🕯️</p>
             <div class="d-grid d-sm-inline-flex gap-2 justify-content-center">
               <button id="btnLightCandle" class="btn btn-primary btn-sm w-100 w-sm-auto">Light Candle 🔥</button>
             </div>
           </div>
 
           <div id="step-blow" class="hidden mt-3">
-            <p class="prompt">Make a wish… then blow out the candle!</p>
+            <p class="prompt">Make a wish… no debugging it afterward. 😄</p>
             <div class="d-grid d-sm-inline-flex gap-2 justify-content-center">
               <button id="btnBlow" class="btn btn-outline-warning w-100 w-sm-auto">💨 Blow Candle</button>
             </div>
@@ -411,11 +687,9 @@
 
         <!-- Gift -->
         <div id="giftStage" class="gift-stage hidden">
-          <p id="giftHint" class="text-info fw-semibold mb-2" style="text-align:center; opacity:0.9;">
-            💾 Access restricted. Solve IQ challenge to decrypt your gift! 🔐
-          </p>
+          <p id="giftHint" class="gift-hint">🎁 Final delivery ready — tap the gift to open it.</p>
 
-          <div class="gift" id="gift" role="button" aria-label="Gift (tap to open)">
+          <div class="gift" id="gift" role="button" tabindex="0" aria-label="Gift (tap to open)">
             <div class="lid"></div>
             <div class="box">
               <div class="ribbon-v"></div>
@@ -425,37 +699,44 @@
 
           <div class="surprise" id="surprise">
             <div class="emoji-burst" id="emojiBurst"></div>
-            <!-- Joker card -->
-            <div class="joker-card" id="jokerCard">
-              <!-- <svg class="clown" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <circle cx="64" cy="64" r="54" fill="#fff5f5"/>
-                <circle cx="38" cy="54" r="10" fill="#ff6b6b"/>
-                <circle cx="90" cy="54" r="10" fill="#4dabf7"/>
-                <ellipse cx="64" cy="76" rx="26" ry="20" fill="#ffe8a3"/>
-                <circle cx="64" cy="70" r="8" fill="#ff3b30"/>
-                <path d="M42 86 Q64 102 86 86" stroke="#222" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <circle cx="48" cy="58" r="4" fill="#222"/>
-                <circle cx="80" cy="58" r="4" fill="#222"/>
-                <path d="M30 40 C40 28, 56 26, 64 34" stroke="#ff4d8d" stroke-width="6" fill="none" stroke-linecap="round"/>
-                <path d="M98 40 C88 28, 72 26, 64 34" stroke="#51cf66" stroke-width="6" fill="none" stroke-linecap="round"/>
-              </svg> -->
-               <!-- Surprise image -->
-              <img id="surpriseImage" class="surprise-image" src="banner.png" alt="Your surprise" loading="lazy"/>
-
-
-              <div class="tech-title">Surprise 🤩</div>
-              <div class="tech-msg" id="giftMessage">
-                "Birthday status: 200 OK ✅ Unique delivery confirmed — auto-assigning you joy and assigning me a
-                <span class='treat-chip'>TREAT</span>. Please approve! 😜" <br>--<strong>Khorshed Alom</strong>
-              </div>
-            </div>
           </div>
         </div>
 
-        <div class="mt-3"><button id="btnReplay" class="btn btn-outline-light btn-sm hidden w-100 w-sm-auto">↻ Replay</button></div>
+        <div class="mt-3 replay-wrap"><button id="btnReplay" class="btn btn-outline-light btn-sm hidden w-100 w-sm-auto">↻ Replay</button></div>
       </div>
     </div>
   </main>
+
+
+  <!-- GIFT POPUP CARD -->
+  <div id="giftCardOverlay" class="gift-card-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="giftCardTitle">
+    <div class="gift-popup-card" id="giftPopupCard">
+      <button id="closeGiftCard" class="gift-card-close" type="button" aria-label="Close birthday card">×</button>
+
+      <img id="surpriseImage" class="surprise-image popup-image" src="banner.png" alt="Your surprise" loading="lazy"/>
+
+      <div class="tech-title" id="giftCardTitle">Birthday Update Installed ✨</div>
+      <div class="tech-msg" id="giftMessage">
+        Status: <strong>200 OK</strong> ✅ Another year successfully deployed.<br>
+        Wishing you more peace, more wins, more laughter, and fewer unnecessary meetings. 😄
+        A <span class="treat-chip">TREAT</span> for the sender is now politely pending approval.
+        <br><br>— <strong>Khorshed Alom</strong>
+      </div>
+
+      <div class="birthday-status" aria-label="Birthday system status">
+        <div class="status-pill"><strong>Happiness</strong>Upgraded 🚀</div>
+        <div class="status-pill"><strong>Age</strong>Classified 🔒</div>
+        <div class="status-pill"><strong>Cake</strong>Required 🍰</div>
+      </div>
+
+      <p id="funnyLine" class="funny-line" aria-live="polite">Official diagnosis: too awesome to have a normal birthday.</p>
+
+      <div class="gift-actions">
+        <button id="btnFunnyLine" type="button" class="btn btn-outline-info">😄 Another birthday note</button>
+        <button id="btnPartyAgain" type="button" class="btn btn-outline-warning">🎉 Emergency confetti</button>
+      </div>
+    </div>
+  </div>
 
   <!-- HELP / NEXT -->
   <button id="helpBtn" class="btn btn-info help-btn">❓ What do I do next?</button>
@@ -479,29 +760,6 @@
     </div>
   </div>
 
-  <!-- IQ Game Modal -->
-  <div class="modal fade" id="iqModal" tabindex="-1" aria-labelledby="iqTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
-      <div class="modal-content bg-dark text-white border-light">
-        <div class="modal-header">
-          <h5 class="modal-title" id="iqTitle">🤣 Funny IQ Challenge</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div id="iqIntro" class="mb-2">Answer 3 silly-smart riddles. Get <strong>2+</strong> right to unlock the gift!</div>
-          <div id="iqQuestion" class="fs-6 fw-semibold"></div>
-          <div id="iqChoices" class="mt-3"></div>
-          <div id="iqProgress" class="mt-3 small text-muted"></div>
-          <div id="iqFeedback" class="mt-2"></div>
-        </div>
-        <div class="modal-footer">
-          <button id="iqNextBtn" type="button" class="btn btn-primary">Next</button>
-          <button id="iqRetryBtn" type="button" class="btn btn-outline-warning d-none">Retry</button>
-          <button id="iqCloseBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -513,6 +771,8 @@ const doorsLayer   = document.getElementById('doorsLayer');
 const btnDoorKnob  = document.getElementById('btnDoorKnob');
 
 const stepLights   = document.getElementById('step-lights');
+const introTitle   = document.getElementById('introTitle');
+const introBanner  = document.getElementById('introBanner');
 const btnLightsOn  = document.getElementById('btnLightsOn');
 
 const cakeWrap     = document.getElementById('cakeWrap');
@@ -534,6 +794,13 @@ const giftStage    = document.getElementById('giftStage');
 const gift         = document.getElementById('gift');
 const emojiBurst   = document.getElementById('emojiBurst');
 const btnReplay    = document.getElementById('btnReplay');
+const funnyLine    = document.getElementById('funnyLine');
+const btnFunnyLine = document.getElementById('btnFunnyLine');
+const btnPartyAgain= document.getElementById('btnPartyAgain');
+const giftCardOverlay = document.getElementById('giftCardOverlay');
+const giftPopupCard   = document.getElementById('giftPopupCard');
+const closeGiftCard   = document.getElementById('closeGiftCard');
+
 
 /* ========= HELP MODAL ========= */
 const helpBtn   = document.getElementById('helpBtn');
@@ -541,15 +808,6 @@ const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
 const helpCurrent = document.getElementById('helpCurrent');
 const helpNext    = document.getElementById('helpNext');
 const helpGoBtn   = document.getElementById('helpGoBtn');
-
-/* ========= IQ MODAL ========= */
-const iqModal   = new bootstrap.Modal(document.getElementById('iqModal'));
-const iqQEl     = document.getElementById('iqQuestion');
-const iqChoices = document.getElementById('iqChoices');
-const iqProg    = document.getElementById('iqProgress');
-const iqFeed    = document.getElementById('iqFeedback');
-const iqNextBtn = document.getElementById('iqNextBtn');
-const iqRetryBtn= document.getElementById('iqRetryBtn');
 
 /* ========= UTIL ========= */
 const isTiny = () => window.innerWidth <= 360;
@@ -618,8 +876,9 @@ function makeBalloonsSVG(){
   }
 }
 
-const TYPE_SPEED= isTiny()? 70 : 60;
-const LINE_PAUSE= 2100;
+const TYPE_SPEED = isTiny() ? 75 : isSmall() ? 70 : 60;
+const LINE_PAUSE = isSmall() ? 2200 : 1900;
+const FIRST_TEXT_DELAY = isSmall() ? 1500 : 1200;
 
 function typeText(lines, cb){
   let i=0,j=0,current=''; typeLine.textContent='';
@@ -628,9 +887,13 @@ function typeText(lines, cb){
     current=lines[i]; j=0; typeLine.textContent='';
     const iv=setInterval(()=>{
       typeLine.textContent=current.slice(0,++j);
-      if(j>=current.length){ clearInterval(iv); setTimeout(()=>{ i++; nextLine(); }, LINE_PAUSE); }
+      if(j>=current.length){
+        clearInterval(iv);
+        setTimeout(()=>{ i++; nextLine(); }, LINE_PAUSE);
+      }
     }, TYPE_SPEED);
-  } nextLine();
+  }
+  setTimeout(nextLine, FIRST_TEXT_DELAY);
 }
 
 function spawnEmojiBurst(){
@@ -645,19 +908,37 @@ function spawnEmojiBurst(){
   }
 }
 
+let introTimers = [];
+function clearIntroTimers(){
+  introTimers.forEach(clearTimeout);
+  introTimers = [];
+}
+function resetIntro(){
+  clearIntroTimers();
+  [introTitle, introBanner, stepLights].forEach(el => el?.classList.remove('show'));
+}
+function revealIntro(){
+  resetIntro();
+  const mobile = window.innerWidth <= 600;
+  const timing = mobile ? [450, 1350, 2300] : [250, 850, 1450];
+  introTimers.push(setTimeout(()=> introTitle.classList.add('show'), timing[0]));
+  introTimers.push(setTimeout(()=> introBanner.classList.add('show'), timing[1]));
+  introTimers.push(setTimeout(()=> stepLights.classList.add('show'), timing[2]));
+}
+
 /* ========= STATE MACHINE =========
    0: at door
    1: lights step visible
    2: candle lighting step visible
    3: blow step visible
    4: typing messages
-   5: gift stage visible (locked by IQ)
+   5: gift stage visible
    6: gift opened
 ===================================*/
 let STAGE = 0;
-let giftUnlocked = false;
 
 function resetVisibility(){
+  resetIntro();
   stepLights.classList.remove('hidden');
   cakeWrap.classList.add('hidden');
   stepCandle.classList.add('hidden');
@@ -676,6 +957,7 @@ btnDoorKnob.addEventListener('click', ()=>{
     doorsLayer.style.display='none';
     STAGE = 1;
     window.scrollTo({top:0, behavior:'smooth'});
+    revealIntro();
   }, 1150);
 });
 
@@ -715,12 +997,11 @@ function blowOut(){
 
   const lines = [
     '🎉 Happy Birthday!',
-    'Sent from Khorshed Alom',
-    'Count your life by smiles, not tears',
-    'Count your age by friends, not years',
-    'Beloved Respected — wish you joy!',
-    'শুভ পয়দা দিবস — Happy Downloading Day!',
-    'Lots Of love 💖'
+    'A warm wish from Khorshed Alom',
+    'May this year bring you peace, good health, and beautiful memories.',
+    'Count the smiles, keep the good people, and ignore the age counter. 😄',
+    'শুভ জন্মদিন — may your happiest moments keep multiplying. ✨',
+    'আল্লাহ আপনার নতুন বছরটি বরকত, কল্যাণ, শান্তি ও সুন্দর মুহূর্তে ভরে দিন। আমিন। 🤍'
   ];
   typeText(lines, ()=>{
     giftStage.classList.remove('hidden');
@@ -732,79 +1013,82 @@ function blowOut(){
 btnBlow.addEventListener('click', blowOut);
 document.addEventListener('keydown', (e)=>{ if(STAGE===3 && (e.key===' '||e.key==='Enter')){ e.preventDefault(); blowOut(); }});
 
-/* IQ Game */
-const QUESTION_POOL = [
-  { q:'Which has many keys but can’t open a single lock?', choices:['Keyboard','Treasure chest','Hotel','Car dealer'], correct:0 },
-  { q:'I get wetter the more I dry. What am I?', choices:['Sponge','Raincoat','Towel','Hair'], correct:2 },
-  { q:'What goes up but never comes down?', choices:['Age','Balloon','Elevator','Prices on Fridays'], correct:0 },
-  { q:'You see me once in June, twice in November, and never in May. What am I?', choices:['Letter E','Letter N','Letter U','Calendar'], correct:0 },
-  { q:'If a plane crashes on the border of Bangladesh and India, where do they bury the survivors?', choices:['Bangladesh','India','Half in each','Nowhere—they\'re survivors'], correct:3 },
-  { q:'Which is heavier: 1 kg of iron or 1 kg of cotton?', choices:['Iron','Cotton','Same weight','Depends on humidity 😅'], correct:2 },
-  { q:'What has a head and a tail but no body?', choices:['Comet','Coin','Lizard (on break)','Kite'], correct:1 },
-  { q:'If you have it, you want to share it. If you share it, you don\'t have it. What is it?', choices:['Money','Secret','Wi-Fi password','Chocolate'], correct:1 },
-  { q:'What can fill a room but takes up no space?', choices:['Light','Air','A good joke','Music'], correct:0 },
-  { q:'I’m tall when I’m young, and short when I’m old. What am I?', choices:['Candle','Tree','Human','Pencil'], correct:0 }
-];
-function sample(arr, n){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
-  return a.slice(0,n);
-}
-let QUESTIONS=[], iqIndex=0, iqScore=0, picked=null;
-
-function renderIQ(){
-  const item=QUESTIONS[iqIndex];
-  iqQEl.textContent=item.q; iqChoices.innerHTML=''; picked=null;
-  item.choices.forEach((c,idx)=>{
-    const b=document.createElement('button'); b.type='button';
-    b.className='btn btn-outline-light w-100 text-start my-1'; b.textContent=c;
-    b.onclick=()=>{ picked=idx; [...iqChoices.children].forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
-    iqChoices.appendChild(b);
-  });
-  iqProg.textContent=`Question ${iqIndex+1} of ${QUESTIONS.length} • Score: ${iqScore}`;
-  iqFeed.textContent=''; iqNextBtn.textContent=iqIndex===QUESTIONS.length-1?'Finish':'Next';
-  iqRetryBtn.classList.add('d-none');
-}
-function startIQ(){
-  QUESTIONS = sample(QUESTION_POOL, 3);
-  iqIndex=0; iqScore=0; picked=null; renderIQ(); iqModal.show();
-}
-iqNextBtn.addEventListener('click', ()=>{
-  if(picked===null){ iqFeed.innerHTML='<span class="text-warning">Choose an answer to continue.</span>'; return; }
-  if(picked===QUESTIONS[iqIndex].correct) iqScore++;
-  if(++iqIndex<QUESTIONS.length){ renderIQ(); }
-  else{
-    const passed = iqScore>=2;
-    iqQEl.textContent = passed? '✅ You passed the Funny IQ!':'❌ Close… but the clown says try again!';
-    iqChoices.innerHTML=''; iqProg.textContent=`Score: ${iqScore}/${QUESTIONS.length}`;
-    iqFeed.innerHTML = passed? '<span class="text-success">Gift unlocked! Close this to open 🎁</span>' : '<span class="text-warning">Get 2+ right. Tap Retry.</span>';
-    iqNextBtn.classList.add('d-none'); iqRetryBtn.classList.toggle('d-none', passed);
-    giftUnlocked = passed;
-  }
-});
-iqRetryBtn.addEventListener('click', ()=>{ iqNextBtn.classList.remove('d-none'); startIQ(); });
-
 /* Gift */
+function showGiftCard(){
+  giftCardOverlay.classList.remove('hidden');
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=> giftCardOverlay.classList.add('show'));
+  });
+  document.body.style.overflow = 'hidden';
+  setTimeout(()=> closeGiftCard.focus(), 380);
+}
+
+function hideGiftCard(){
+  giftCardOverlay.classList.remove('show');
+  document.body.style.overflow = '';
+  setTimeout(()=> giftCardOverlay.classList.add('hidden'), 360);
+}
+
 gift.addEventListener('click', ()=>{
   if(STAGE < 5) return;
-  if(!giftUnlocked){
-    startIQ();
-    const modalEl=document.getElementById('iqModal');
-    modalEl.addEventListener('hidden.bs.modal', function onHide(){
-      modalEl.removeEventListener('hidden.bs.modal', onHide);
-      if(giftUnlocked) openGift();
-    });
-  }else{
-    if(!gift.classList.contains('open')) openGift();
-    else { spawnEmojiBurst(); burstConfetti(isSmall()?100:160); }
+
+  if(!gift.classList.contains('open')){
+    openGift();
+  } else {
+    spawnEmojiBurst();
+    burstConfetti(isSmall()?90:140);
+    showGiftCard();
   }
 });
+
+gift.addEventListener('keydown', (e)=>{
+  if((e.key==='Enter'||e.key===' ') && STAGE>=5){
+    e.preventDefault();
+    gift.click();
+  }
+});
+
 function openGift(){
   gift.classList.add('open');
-  spawnEmojiBurst(); burstConfetti(isSmall()?140:200);
+  spawnEmojiBurst();
+  burstConfetti(isSmall()?140:200);
   btnReplay.classList.remove('hidden');
   STAGE = 6;
+
+  /* Let the gift lid open first, then reveal the popup card. */
+  setTimeout(showGiftCard, 720);
 }
+
+closeGiftCard.addEventListener('click', hideGiftCard);
+
+giftCardOverlay.addEventListener('click', (e)=>{
+  if(e.target === giftCardOverlay) hideGiftCard();
+});
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && giftCardOverlay.classList.contains('show')){
+    hideGiftCard();
+  }
+});
+
+const FUNNY_LINES = [
+  'Age update complete. Changelog intentionally hidden. 😌',
+  'Today’s forecast: 100% chance of cake with scattered compliments. 🍰',
+  'Your warranty has been extended for another fabulous year. ✨',
+  'Breaking news: scientists confirm you still look suspiciously young. 🕵️',
+  'Birthday rule #1: calories cannot authenticate today. 🔐',
+  'Performance report: kindness ↑, wisdom ↑, tolerance for nonsense ↓. 😄'
+];
+let funnyIndex = 0;
+btnFunnyLine.addEventListener('click', ()=>{
+  funnyIndex = (funnyIndex + 1) % FUNNY_LINES.length;
+  funnyLine.textContent = FUNNY_LINES[funnyIndex];
+  spawnEmojiBurst();
+});
+btnPartyAgain.addEventListener('click', ()=>{
+  burstConfetti(isSmall()?120:190);
+  funnyLine.textContent = 'Emergency celebration protocol activated. Please remain fabulous. 🎉';
+});
 
 /* Replay */
 btnReplay.addEventListener('click', ()=>{
@@ -813,7 +1097,11 @@ btnReplay.addEventListener('click', ()=>{
   doorsLayer.style.display=''; btnDoorKnob.removeAttribute('disabled');
   flame.style.opacity='0'; flame.classList.remove('flicker');
   gift.classList.remove('open'); emojiBurst.innerHTML='';
-  giftUnlocked=false; STAGE=0; resetVisibility();
+  giftCardOverlay.classList.remove('show');
+  giftCardOverlay.classList.add('hidden');
+  document.body.style.overflow='';
+  funnyIndex=0; funnyLine.textContent='Official diagnosis: too awesome to have a normal birthday.';
+  STAGE=0; resetVisibility();
   balloonsLayer.innerHTML=''; confettiLayer.innerHTML=''; sparklesLayer.innerHTML=''; typeLine.textContent='';
   window.scrollTo({top:0, behavior:'smooth'});
 });
@@ -826,8 +1114,8 @@ function getStepStatus(){
     case 2: return {current:'Room is lit ✨',         next:'Tap “Light Candle 🔥” or the candle.', target:btnLightCandle};
     case 3: return {current:'Candle is lit 🔥',      next:'Make a wish, then press “Blow Candle 💨”.', target:btnBlow};
     case 4: return {current:'Birthday messages typing…', next:'Wait a moment — the gift will appear.', target:typeLine};
-    case 5: return {current:'Gift is ready 🎁',      next:'Tap the gift, pass Funny IQ to open.', target:gift};
-    case 6: return {current:'All done! 🎉',          next:'Tap Replay to start again.',       target:btnReplay};
+    case 5: return {current:'Gift is ready 🎁',      next:'Tap the gift to reveal the final surprise.', target:gift};
+    case 6: return {current:'Your birthday card is open 🎉', next:'Close the card or tap the gift again to reopen it.', target:gift};
   }
 }
 helpBtn.addEventListener('click', ()=>{
